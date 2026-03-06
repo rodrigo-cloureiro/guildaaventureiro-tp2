@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: guildaaventureiro
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/appuser
+    driver-class-name: org.postgresql.Driver
+    username: appuser
+    password: apppass
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
+
+    properties:
+      hibernate:
+        format_sql: true
+
+    open-in-view: false
