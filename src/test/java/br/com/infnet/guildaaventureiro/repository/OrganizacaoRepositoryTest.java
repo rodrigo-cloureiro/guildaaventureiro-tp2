@@ -20,7 +20,13 @@ public class OrganizacaoRepositoryTest {
     @Test
     public void findAllTest() {
         List<Organizacao> all = organizacaoRepository.findAll();
-        all.forEach(System.out::println);
+        all.forEach(o -> {
+            System.out.println("Organização: " + o.getNome());
+            System.out.println("Roles da organização:");
+            o.getRoles().forEach(r -> System.out.println("\t - " + r.getNome()));
+            System.out.println("Usuários da organização:");
+            o.getUsuarios().forEach(u -> System.out.println("\t - " + u.getNome()));
+        });
         assertFalse(all.isEmpty());
     }
 }
