@@ -3,9 +3,9 @@ spring:
     name: guildaaventureiro
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/appuser
+    url: jdbc:postgresql://localhost:5432/postgres
     driver-class-name: org.postgresql.Driver
-    username: appuser
+    username: postgres
     password: apppass
 
   jpa:
