@@ -1,52 +1,57 @@
 package br.com.infnet.guildaaventureiro.repository;
 
+import br.com.infnet.guildaaventureiro.domain.Organizacao;
 import br.com.infnet.guildaaventureiro.domain.Usuario;
+import br.com.infnet.guildaaventureiro.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class UsuarioRepositoryTest {
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private OrganizacaoRepository organizacaoRepository;
 
     @Test
     public void findAllTest() {
         List<Usuario> all = usuarioRepository.findAll();
-        all.forEach(System.out::println);
+        all.forEach(u -> {
+            System.out.println("Usuário: " + u.getNome() + " - Organização: " + u.getOrganizacao().getNome());
+            u.getRoles().forEach(r -> System.out.println(r.getRole().getNome()));
+        });
         assertFalse(all.isEmpty());
     }
 
     @Test
-    public void findByOrganizacaoNameTest() {
+    public void findByOrganizacaoNomeTest() {
         List<Usuario> list = usuarioRepository.findByOrganizacaoNomeIgnoreCase("Guilda do Norte");
         list.forEach(u -> System.out.println(u.getNome()));
         assertFalse(list.isEmpty());
+    }
 
-        /*
-        select
-            u1_0.id,
-            u1_0.created_at,
-            u1_0.email,
-            u1_0.nome,
-            u1_0.organizacao_id,
-            u1_0.senha_hash,
-            u1_0.status,
-            u1_0.ultimo_login_em,
-            u1_0.updated_at
-        from
-            audit.usuarios u1_0
-        left join
-            audit.organizacoes o1_0
-                on o1_0.id=u1_0.organizacao_id
-        where
-            upper(o1_0.nome)=upper(?)
-        */
+    @Test
+    public void createUsuarioWithOrganizacaoTest() {
+        Organizacao org = organizacaoRepository.findById(2L).orElseThrow();
+        Usuario u = new Usuario(
+                "Audit Mister",
+                "audit@guildasul.com",
+                "hash_fake_4",
+                UsuarioStatus.ATIVO
+        );
+        org.adicionarUsuario(u);
+        usuarioRepository.save(u);
+
+        Optional<Usuario> saved = usuarioRepository.findByEmailIgnoreCase(u.getEmail());
+        assertTrue(saved.isPresent());
     }
 }
