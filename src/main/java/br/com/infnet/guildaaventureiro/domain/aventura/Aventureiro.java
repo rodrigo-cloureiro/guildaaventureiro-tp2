@@ -61,6 +61,14 @@ public class Aventureiro {
     @NotNull(message = "O usuário é obrigatório")
     private Usuario usuario;
 
+    @OneToOne(
+            mappedBy = "aventureiro",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            optional = false
+    )
+    private Companheiro companheiro;
+
     @Column(length = 120, nullable = false)
     private String nome;
 
@@ -105,5 +113,14 @@ public class Aventureiro {
         this.organizacao = responsavelCadastro.getOrganizacao();
         responsavelCadastro.cadastrarAventureiro(this);
         this.organizacao.adicionarAventureiro(this);
+    }
+
+    public void definirCompanheiro(Companheiro companheiro) {
+        companheiro.definirAventureiro(this);
+        this.companheiro = companheiro;
+    }
+
+    public void removerCompanheiro() {
+        this.companheiro = null;
     }
 }
