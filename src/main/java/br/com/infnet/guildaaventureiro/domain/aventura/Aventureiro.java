@@ -1,8 +1,11 @@
 package br.com.infnet.guildaaventureiro.domain.aventura;
 
+import br.com.infnet.guildaaventureiro.domain.Organizacao;
+import br.com.infnet.guildaaventureiro.domain.Usuario;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.AventureiroClasse;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,30 +17,49 @@ import java.time.LocalDateTime;
 @Table(
         name = "aventureiros",
         schema = "aventura",
-        uniqueConstraints = {}, // TODO Definir unique constraints
-        check = {
+        /*check = {
+                @CheckConstraint(
+                        name = "ck_aventureiros_classe",
+                        constraint = "classe IN ('GUERREIRO', 'MAGO', 'ARQUEIRO', 'CLERIGO', 'LADINO')"
+                ),
                 @CheckConstraint(name = "ck_aventureiros_nivel", constraint = "nivel >= 1")
-        },
-        indexes = {} // TODO definir indexes
+        },*/
+        indexes = {
+                @Index(
+                        name = "idx_aventureiros_org_classe_nivel",
+                        columnList = "organizacao_id, classe, nivel"
+                ),
+        }
 )
 @Getter
 @Setter
 public class Aventureiro {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aventureiros_id")
     @SequenceGenerator(
-            name = "",
-            sequenceName = "",
+            name = "aventureiros_id",
+            sequenceName = "aventureiros_id_seq",
             schema = "aventura",
             allocationSize = 1
-    ) // TODO Definir sequence corretamente
+    )
     private Long id;
 
-    @Column(nullable = false)
-    private String organizacao; // TODO Aplicar relacionamento corretamente
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "organizacao_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_aventureiros_org")
+    )
+    private Organizacao organizacao;
 
-    @Column(nullable = false)
-    private String usuario; // TODO Aplicar relacionamento corretamente
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "usuario_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_aventureiros_usuario")
+    )
+    @NotNull(message = "O usuário é obrigatório")
+    private Usuario usuario;
 
     @Column(length = 120, nullable = false)
     private String nome;
@@ -60,4 +82,28 @@ public class Aventureiro {
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime dataAtualizacao;
+
+    protected Aventureiro() {
+    }
+
+    public Aventureiro(String nome, AventureiroClasse classe, int nivel) {
+        this.nome = nome;
+        this.classe = classe;
+        this.nivel = nivel;
+    }
+
+    public void encerrarVinculo() {
+        this.ativo = false;
+    }
+
+    public void recrutar() {
+        this.ativo = true;
+    }
+
+    public void registrar(Usuario responsavelCadastro) {
+        this.usuario = responsavelCadastro;
+        this.organizacao = responsavelCadastro.getOrganizacao();
+        responsavelCadastro.cadastrarAventureiro(this);
+        this.organizacao.adicionarAventureiro(this);
+    }
 }
