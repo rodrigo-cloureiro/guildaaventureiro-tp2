@@ -1,5 +1,6 @@
 package br.com.infnet.guildaaventureiro.domain;
 
+import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.enums.UsuarioStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -53,6 +54,9 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     private Set<UsuarioRole> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "usuario")
+    private Set<Aventureiro> aventureiros = new HashSet<>();
 
     @Column(
             length = 120,
@@ -113,5 +117,9 @@ public class Usuario {
 
     public void definirOrganizacao(Organizacao organizacao) {
         this.organizacao = organizacao;
+    }
+
+    public void cadastrarAventureiro(Aventureiro aventureiro) {
+        this.aventureiros.add(aventureiro);
     }
 }
