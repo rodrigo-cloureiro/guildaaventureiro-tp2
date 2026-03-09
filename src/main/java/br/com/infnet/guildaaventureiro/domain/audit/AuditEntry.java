@@ -1,6 +1,6 @@
-package br.com.infnet.guildaaventureiro.domain;
+package br.com.infnet.guildaaventureiro.domain.audit;
 
-import br.com.infnet.guildaaventureiro.domain.enums.AuditEntryAction;
+import br.com.infnet.guildaaventureiro.domain.audit.enums.AuditEntryAction;
 import io.hypersistence.utils.hibernate.type.basic.Inet;
 import io.hypersistence.utils.hibernate.type.basic.PostgreSQLInetType;
 import jakarta.persistence.*;

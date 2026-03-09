@@ -1,4 +1,4 @@
-package br.com.infnet.guildaaventureiro.domain.enums;
+package br.com.infnet.guildaaventureiro.domain.audit.enums;
 
 public enum AuditEntryAction {
     CREATE,

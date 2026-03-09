@@ -1,10 +1,10 @@
 package br.com.infnet.guildaaventureiro.repository.aventura;
 
-import br.com.infnet.guildaaventureiro.domain.Usuario;
+import br.com.infnet.guildaaventureiro.domain.audit.Usuario;
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.AventureiroClasse;
-import br.com.infnet.guildaaventureiro.repository.OrganizacaoRepository;
-import br.com.infnet.guildaaventureiro.repository.UsuarioRepository;
+import br.com.infnet.guildaaventureiro.repository.audit.OrganizacaoRepository;
+import br.com.infnet.guildaaventureiro.repository.audit.UsuarioRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

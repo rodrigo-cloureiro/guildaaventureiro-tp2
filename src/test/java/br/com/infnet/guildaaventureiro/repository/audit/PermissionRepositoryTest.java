@@ -1,6 +1,6 @@
-package br.com.infnet.guildaaventureiro.repository;
+package br.com.infnet.guildaaventureiro.repository.audit;
 
-import br.com.infnet.guildaaventureiro.domain.Permission;
+import br.com.infnet.guildaaventureiro.domain.audit.Permission;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;

@@ -1,4 +1,4 @@
-package br.com.infnet.guildaaventureiro.domain;
+package br.com.infnet.guildaaventureiro.domain.audit;
 
 import jakarta.persistence.*;
 import lombok.Getter;

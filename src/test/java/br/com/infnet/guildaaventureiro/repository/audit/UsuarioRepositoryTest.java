@@ -1,8 +1,8 @@
-package br.com.infnet.guildaaventureiro.repository;
+package br.com.infnet.guildaaventureiro.repository.audit;
 
-import br.com.infnet.guildaaventureiro.domain.Organizacao;
-import br.com.infnet.guildaaventureiro.domain.Usuario;
-import br.com.infnet.guildaaventureiro.domain.enums.UsuarioStatus;
+import br.com.infnet.guildaaventureiro.domain.audit.Organizacao;
+import br.com.infnet.guildaaventureiro.domain.audit.Usuario;
+import br.com.infnet.guildaaventureiro.domain.audit.enums.UsuarioStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
