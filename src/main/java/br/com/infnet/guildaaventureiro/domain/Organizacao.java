@@ -1,5 +1,6 @@
 package br.com.infnet.guildaaventureiro.domain;
 
+import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -57,8 +58,20 @@ public class Organizacao {
     @OneToMany(mappedBy = "organizacao", fetch = FetchType.LAZY)
     private Set<ApiKey> apiKeys = new HashSet<>();
 
+    @OneToMany(
+            mappedBy = "organizacao",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.REMOVE, // Se a organização for removida, todos os aventureiros serão removidos
+            orphanRemoval = true // Se o aventureiro for removido da organização, será removido do banco
+    )
+    private Set<Aventureiro> aventureiros = new HashSet<>();
+
     public void adicionarUsuario(Usuario usuario) {
         this.usuarios.add(usuario);
         usuario.definirOrganizacao(this);
+    }
+
+    public void adicionarAventureiro(Aventureiro aventureiro) {
+        this.aventureiros.add(aventureiro);
     }
 }
