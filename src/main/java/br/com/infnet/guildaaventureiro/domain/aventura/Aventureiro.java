@@ -84,11 +84,11 @@ public class Aventureiro {
     private boolean ativo = true;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column(name = "data_criacao", nullable = false, updatable = false)
     private LocalDateTime dataCriacao;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column(name = "data_atualizacao", nullable = false)
     private LocalDateTime dataAtualizacao;
 
     protected Aventureiro() {
