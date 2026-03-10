@@ -12,6 +12,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(
@@ -69,6 +71,14 @@ public class Aventureiro {
     )
     private Companheiro companheiro;
 
+    @OneToMany(
+            mappedBy = "aventureiro",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<ParticipacaoMissao> participacoesEmMissoes = new HashSet<>();
+
     @Column(length = 120, nullable = false)
     private String nome;
 
@@ -122,5 +132,12 @@ public class Aventureiro {
 
     public void removerCompanheiro() {
         this.companheiro = null;
+    }
+
+    public void entrarEmMissao(ParticipacaoMissao participacaoMissao) {
+        // TODO Um aventureiro inativo não pode ser associado.
+        // TODO Apenas aventureiros da mesma organização podem participar.
+
+        this.participacoesEmMissoes.add(participacaoMissao);
     }
 }
