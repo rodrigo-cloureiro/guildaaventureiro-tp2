@@ -2,14 +2,15 @@ package br.com.infnet.guildaaventureiro.domain.audit;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.audit.enums.UsuarioStatus;
+import br.com.infnet.guildaaventureiro.domain.aventura.enums.AventureiroClasse;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -32,7 +33,6 @@ import java.util.Set;
         }
 )
 @Getter
-@Setter
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarios_id")
@@ -53,73 +53,50 @@ public class Usuario {
     private Organizacao organizacao;
 
     @OneToMany(mappedBy = "usuario")
-    private Set<UsuarioRole> roles = new HashSet<>();
+    private final Set<UsuarioRole> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "usuario")
-    private Set<Aventureiro> aventureiros = new HashSet<>();
+    private final Set<Aventureiro> aventureiros = new HashSet<>();
 
-    @Column(
-            length = 120,
-            nullable = false
-    )
+    @Column(length = 120, nullable = false)
     private String nome;
 
-    @Column(
-            length = 180,
-            nullable = false
-    )
+    @Column(length = 180, nullable = false)
     private String email;
 
-    @Column(
-            name = "senha_hash",
-            length = 255,
-            nullable = false
-    )
+    @Column(name = "senha_hash", length = 255, nullable = false)
     private String senhaHash;
 
     @Enumerated(EnumType.STRING)
-    @Column(
-            length = 30,
-            nullable = false
-    )
+    @Column(length = 30, nullable = false)
     private UsuarioStatus status;
 
-    @Column(
-            name = "ultimo_login_em",
-            nullable = true
-    )
+    @Column(name = "ultimo_login_em", nullable = true)
     private LocalDateTime ultimoLoginEm;
 
     @CreationTimestamp
-    @Column(
-            name = "created_at",
-            nullable = false,
-            updatable = false
-    )
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(
-            name = "updated_at",
-            nullable = false
-    )
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     protected Usuario() {
     }
 
-    public Usuario(String nome, String email, String senhaHash, UsuarioStatus status) {
+    public Usuario(Organizacao organizacao, String nome, String email, String senhaHash, UsuarioStatus status) {
+        this.organizacao = Objects.requireNonNull(organizacao, "A organização é obrigatória");
         this.nome = nome;
         this.email = email;
         this.senhaHash = senhaHash;
         this.status = status;
     }
 
-    public void definirOrganizacao(Organizacao organizacao) {
-        this.organizacao = organizacao;
-    }
-
-    public void cadastrarAventureiro(Aventureiro aventureiro) {
+    // TODO Implementar DTO
+    public void recrutarAventureiro(String nome, AventureiroClasse classe, int nivel) {
+        Aventureiro aventureiro = new Aventureiro(this.organizacao, this, nome, classe, nivel);
         this.aventureiros.add(aventureiro);
+        this.organizacao.adicionarAventureiro(aventureiro);
     }
 }
