@@ -4,26 +4,28 @@ import br.com.infnet.guildaaventureiro.domain.audit.Organizacao;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.NivelPerigoMissao;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.PapelMissao;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.StatusMissao;
+import br.com.infnet.guildaaventureiro.exception.aventura.AventureiroInativoException;
+import br.com.infnet.guildaaventureiro.exception.aventura.MissaoNaoAceitaParticipantesException;
+import br.com.infnet.guildaaventureiro.exception.aventura.OrganizacaoInvalidaException;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(
         name = "missoes",
         schema = "aventura",
-        uniqueConstraints = {},
         indexes = {
                 @Index(name = "idx_missoes_nivel_status", columnList = "nivel_perigo, status")
         }
 )
 @Getter
-@Setter
 public class Missao {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "missoes_id")
@@ -49,7 +51,7 @@ public class Missao {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private Set<ParticipacaoMissao> participacoesEmMissoes = new HashSet<>();
+    private final Set<ParticipacaoMissao> participacoesEmMissoes = new HashSet<>();
 
     @Column(length = 150, nullable = false)
     private String titulo;
@@ -75,18 +77,41 @@ public class Missao {
     protected Missao() {
     }
 
-    public Missao(String titulo, NivelPerigoMissao nivelPerigo, StatusMissao status) {
-        this.titulo = titulo;
-        this.nivelPerigo = nivelPerigo;
-        this.status = status;
+    public Missao(Organizacao organizacao, String titulo, NivelPerigoMissao nivelPerigo) {
+        this.organizacao = Objects.requireNonNull(organizacao, "A organização é obrigatória");
+        this.titulo = Objects.requireNonNull(titulo, "O título é obrigatório");
+        this.nivelPerigo = Objects.requireNonNull(nivelPerigo, "O nível do perigo é obrigatório");
+        this.status = StatusMissao.PLANEJADA;
     }
 
-    public void definirDataInicio(LocalDateTime dataInicio) {
-        this.dataInicio = dataInicio;
+    public Set<ParticipacaoMissao> getParticipacoesEmMissoes() {
+        return Collections.unmodifiableSet(this.participacoesEmMissoes);
     }
 
-    public void definirDataTermino(LocalDateTime dataTermino) {
-        this.dataTermino = dataTermino;
+    public void iniciarMissao() {
+        if (this.status != StatusMissao.PLANEJADA) {
+            throw new IllegalArgumentException("Não é possível iniciar missões que não estejam planejadas");
+        }
+
+        this.status = StatusMissao.EM_ANDAMENTO;
+        this.dataInicio = LocalDateTime.now();
+    }
+
+    public void concluirMissao() {
+        if (this.status != StatusMissao.EM_ANDAMENTO) {
+            throw new IllegalArgumentException("A missão precisa estar em andamento para ser concluída");
+        }
+
+        this.status = StatusMissao.CONCLUIDA;
+        this.dataTermino = LocalDateTime.now();
+    }
+
+    public void cancelarMissao() {
+        if (this.status == StatusMissao.CONCLUIDA) {
+            throw new IllegalArgumentException("Não é possível cancelar missões concluídas");
+        }
+
+        this.status = StatusMissao.CANCELADA;
     }
 
     public void adicionarAventureiro(
@@ -94,16 +119,35 @@ public class Missao {
             PapelMissao papelMissao,
             Integer recompensaEmOuro
     ) { // TODO Implementar DTO
-        // TODO A missão deve estar em estado compatível para aceitar participantes.
-        // TODO Um aventureiro inativo não pode ser associado.
-        // TODO Apenas aventureiros da mesma organização podem participar.
+        verificarOrganizacao(aventureiro);
+        verificarStatus();
+        verificarInatividadeAventureiro(aventureiro);
 
         ParticipacaoMissao participacaoMissao = new ParticipacaoMissao(papelMissao, recompensaEmOuro);
+        participacaoMissao.associar(this, aventureiro);
+    }
 
-        participacaoMissao.definirMissao(this);
-        participacaoMissao.definirAventureiro(aventureiro);
+    void adicionarParticipacao(ParticipacaoMissao participacaoMissao) {
+        this.participacoesEmMissoes.add(Objects.requireNonNull(participacaoMissao));
+    }
 
-        this.participacoesEmMissoes.add(participacaoMissao);
-        aventureiro.entrarEmMissao(participacaoMissao);
+    private void verificarStatus() {
+        if (this.status != StatusMissao.PLANEJADA) {
+            throw new MissaoNaoAceitaParticipantesException(
+                    "Não é possível adicionar aventureiros quando a missão está " + this.status.name()
+            );
+        }
+    }
+
+    private void verificarInatividadeAventureiro(Aventureiro aventureiro) {
+        if (!aventureiro.isAtivo()) {
+            throw new AventureiroInativoException("Aventureiros inativos não podem ser associados");
+        }
+    }
+
+    private void verificarOrganizacao(Aventureiro aventureiro) {
+        if (!Objects.equals(this.organizacao.getId(), aventureiro.getOrganizacao().getId())) {
+            throw new OrganizacaoInvalidaException("O aventureiro não pertence a organização");
+        }
     }
 }
