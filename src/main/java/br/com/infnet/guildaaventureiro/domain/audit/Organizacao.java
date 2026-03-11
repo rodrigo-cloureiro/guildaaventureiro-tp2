@@ -3,11 +3,11 @@ package br.com.infnet.guildaaventureiro.domain.audit;
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -19,7 +19,6 @@ import java.util.Set;
         }
 )
 @Getter
-@Setter
 public class Organizacao {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "organizacoes_id")
@@ -31,32 +30,24 @@ public class Organizacao {
     )
     private Long id;
 
-    @Column(
-            length = 120,
-            nullable = false,
-            unique = true
-    )
+    @Column(length = 120, nullable = false, unique = true)
     private String nome;
 
     @Column(nullable = false)
     private boolean ativo = true;
 
     @CreationTimestamp
-    @Column(
-            name = "created_at",
-            nullable = false,
-            updatable = false
-    )
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "organizacao", fetch = FetchType.LAZY)
-    private Set<Usuario> usuarios = new HashSet<>();
+    private final Set<Usuario> usuarios = new HashSet<>();
 
     @OneToMany(mappedBy = "organizacao", fetch = FetchType.LAZY)
-    private Set<Role> roles = new HashSet<>();
+    private final Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "organizacao", fetch = FetchType.LAZY)
-    private Set<ApiKey> apiKeys = new HashSet<>();
+    private final Set<ApiKey> apiKeys = new HashSet<>();
 
     @OneToMany(
             mappedBy = "organizacao",
@@ -64,11 +55,25 @@ public class Organizacao {
             cascade = CascadeType.REMOVE, // Se a organização for removida, todos os aventureiros serão removidos
             orphanRemoval = true // Se o aventureiro for removido da organização, será removido do banco
     )
-    private Set<Aventureiro> aventureiros = new HashSet<>();
+    private final Set<Aventureiro> aventureiros = new HashSet<>();
+
+    protected Organizacao() {
+    }
+
+    public Organizacao(String nome) {
+        this.nome = Objects.requireNonNull(nome, "O nome é obrigatório");
+    }
+
+    public void ativarOrganizacao() {
+        this.ativo = true;
+    }
+
+    public void desativarOrganizacao() {
+        this.ativo = false;
+    }
 
     public void adicionarUsuario(Usuario usuario) {
         this.usuarios.add(usuario);
-        usuario.definirOrganizacao(this);
     }
 
     public void adicionarAventureiro(Aventureiro aventureiro) {
