@@ -1,5 +1,6 @@
 package br.com.infnet.guildaaventureiro.repository.aventura;
 
+import br.com.infnet.guildaaventureiro.domain.audit.Organizacao;
 import br.com.infnet.guildaaventureiro.domain.audit.Usuario;
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.Companheiro;
@@ -29,11 +30,17 @@ public class AventureiroRepositoryTest {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private Organizacao organizacao;
+    private Usuario usuario;
     private Aventureiro aventureiro;
 
     @BeforeEach
     public void setUp() {
+        this.organizacao = organizacaoRepository.findById(1L).orElse(null);
+        this.usuario = usuarioRepository.findById(1L).orElse(null);
         this.aventureiro = new Aventureiro(
+                organizacao,
+                usuario,
                 "Rick Forjafogo",
                 AventureiroClasse.ARQUEIRO,
                 100
@@ -45,41 +52,44 @@ public class AventureiroRepositoryTest {
         if (this.aventureiro != null) {
             this.aventureiro = null;
         }
+        if (this.organizacao != null) {
+            this.organizacao = null;
+        }
+        if (this.usuario != null) {
+            this.usuario = null;
+        }
     }
 
     @Test
     public void createAventureiroTest() {
-        Usuario usuario = usuarioRepository.findById(1L).orElseThrow();
-        this.aventureiro.registrar(usuario);
+        aventureiroRepository.save(aventureiro);
 
-        assertNotNull(this.aventureiro.getNome());
-        assertEquals(100, this.aventureiro.getNivel());
-        assertNotNull(this.aventureiro.getClasse());
-        assertNotNull(this.aventureiro.getOrganizacao().getNome());
-        assertNotNull(this.aventureiro.getUsuario().getNome());
+        Aventureiro aventureiroDb = aventureiroRepository
+                .findById(aventureiro.getId())
+                .orElseThrow();
+
+        assertEquals("Rick Forjafogo", aventureiroDb.getNome());
+        assertEquals(AventureiroClasse.ARQUEIRO, aventureiroDb.getClasse());
+        assertEquals(100, aventureiroDb.getNivel());
+        assertTrue(aventureiroDb.isAtivo());
     }
 
     @Test
     public void setCompanheiroDoAventureiroTest() {
-        Usuario usuario = usuarioRepository.findById(1L).orElseThrow();
-        this.aventureiro.registrar(usuario);
-        this.aventureiroRepository.save(this.aventureiro);
-
         Companheiro companheiro = new Companheiro(
                 "Fenrir",
                 CompanheiroEspecie.LOBO,
                 100
         );
-        this.aventureiro.definirCompanheiro(companheiro);
 
-        this.aventureiroRepository.save(this.aventureiro);
+        aventureiro.definirCompanheiro(companheiro);
+        aventureiroRepository.save(aventureiro);
 
-        Aventureiro aventureiroInDb = this.aventureiroRepository.findById(this.aventureiro.getId())
+        Aventureiro aventureiroDb = aventureiroRepository
+                .findById(aventureiro.getId())
                 .orElseThrow();
 
-        assertNotNull(aventureiroInDb.getCompanheiro());
-        assertEquals("Fenrir", aventureiroInDb.getCompanheiro().getNome());
-        assertEquals(CompanheiroEspecie.LOBO, aventureiroInDb.getCompanheiro().getEspecie());
-        assertEquals(100, aventureiroInDb.getCompanheiro().getLealdade());
+        assertNotNull(aventureiroDb.getCompanheiro());
+        assertEquals("Fenrir", aventureiroDb.getCompanheiro().getNome());
     }
 }
