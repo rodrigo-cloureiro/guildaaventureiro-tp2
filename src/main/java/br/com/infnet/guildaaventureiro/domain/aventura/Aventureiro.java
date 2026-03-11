@@ -7,12 +7,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -34,7 +34,6 @@ import java.util.Set;
         }
 )
 @Getter
-@Setter
 public class Aventureiro {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aventureiros_id")
@@ -66,8 +65,7 @@ public class Aventureiro {
     @OneToOne(
             mappedBy = "aventureiro",
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            optional = false
+            orphanRemoval = true
     )
     private Companheiro companheiro;
 
@@ -77,7 +75,7 @@ public class Aventureiro {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private Set<ParticipacaoMissao> participacoesEmMissoes = new HashSet<>();
+    private final Set<ParticipacaoMissao> participacoesEmMissoes = new HashSet<>();
 
     @Column(length = 120, nullable = false)
     private String nome;
@@ -104,7 +102,15 @@ public class Aventureiro {
     protected Aventureiro() {
     }
 
-    public Aventureiro(String nome, AventureiroClasse classe, int nivel) {
+    public Aventureiro(
+            Organizacao organizacao,
+            Usuario usuario,
+            String nome,
+            AventureiroClasse classe,
+            int nivel
+    ) {
+        this.organizacao = Objects.requireNonNull(organizacao, "A organização é obrigatória");
+        this.usuario = Objects.requireNonNull(usuario, "O usuário é obrigatório");
         this.nome = nome;
         this.classe = classe;
         this.nivel = nivel;
@@ -116,13 +122,6 @@ public class Aventureiro {
 
     public void recrutar() {
         this.ativo = true;
-    }
-
-    public void registrar(Usuario responsavelCadastro) {
-        this.usuario = responsavelCadastro;
-        this.organizacao = responsavelCadastro.getOrganizacao();
-        responsavelCadastro.cadastrarAventureiro(this);
-        this.organizacao.adicionarAventureiro(this);
     }
 
     public void definirCompanheiro(Companheiro companheiro) {
