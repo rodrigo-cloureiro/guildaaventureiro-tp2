@@ -42,16 +42,17 @@ public class UsuarioRepositoryTest {
     @Test
     public void createUsuarioWithOrganizacaoTest() {
         Organizacao org = organizacaoRepository.findById(2L).orElseThrow();
-        Usuario u = new Usuario(
+        Usuario usuario = new Usuario(
+                org,
                 "Audit Mister",
                 "audit@guildasul.com",
                 "hash_fake_4",
                 UsuarioStatus.ATIVO
         );
-        org.adicionarUsuario(u);
-        usuarioRepository.save(u);
+        org.adicionarUsuario(usuario);
+        usuarioRepository.save(usuario);
 
-        Optional<Usuario> saved = usuarioRepository.findByEmailIgnoreCase(u.getEmail());
+        Optional<Usuario> saved = usuarioRepository.findByEmailIgnoreCase(usuario.getEmail());
         assertTrue(saved.isPresent());
     }
 }
