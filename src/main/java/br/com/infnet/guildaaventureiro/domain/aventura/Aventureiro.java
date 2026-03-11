@@ -134,10 +134,7 @@ public class Aventureiro {
         this.companheiro = null;
     }
 
-    public void entrarEmMissao(ParticipacaoMissao participacaoMissao) {
-        // TODO Um aventureiro inativo não pode ser associado.
-        // TODO Apenas aventureiros da mesma organização podem participar.
-
+    void entrarEmMissao(ParticipacaoMissao participacaoMissao) {
         this.participacoesEmMissoes.add(participacaoMissao);
     }
 }
