@@ -4,10 +4,10 @@ import br.com.infnet.guildaaventureiro.domain.aventura.enums.PapelMissao;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(
@@ -18,10 +18,9 @@ import java.time.LocalDateTime;
         }
 )
 @Getter
-@Setter
 public class ParticipacaoMissao {
     @EmbeddedId
-    private ParticipacaoMissaoId id;
+    private final ParticipacaoMissaoId id = new ParticipacaoMissaoId();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId(value = "missaoId")
@@ -59,16 +58,19 @@ public class ParticipacaoMissao {
     protected ParticipacaoMissao() {
     }
 
-    public ParticipacaoMissao(PapelMissao papelMissao, Integer recompensaEmOuro) {;
-        this.papel = papelMissao;
+    public ParticipacaoMissao(PapelMissao papelMissao, Integer recompensaEmOuro) {
+        this.papel = Objects.requireNonNull(papelMissao, "O papel do aventureiro na missão é obrigatório");
         this.recompensaEmOuro = recompensaEmOuro;
     }
 
-    public void definirMissao(Missao missao) {
-        this.missao = missao;
+    public void definirMvp() {
+        this.mvp = true;
     }
 
-    public void definirAventureiro(Aventureiro aventureiro) {
-        this.aventureiro = aventureiro;
+    public void associar(Missao missao, Aventureiro aventureiro) {
+        this.missao = Objects.requireNonNull(missao);
+        this.aventureiro = Objects.requireNonNull(aventureiro);
+        missao.adicionarParticipacao(this);
+        aventureiro.entrarEmMissao(this);
     }
 }
