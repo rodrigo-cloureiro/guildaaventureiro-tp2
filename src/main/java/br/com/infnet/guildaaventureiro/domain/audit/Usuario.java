@@ -93,10 +93,12 @@ public class Usuario {
         this.status = status;
     }
 
-    // TODO Implementar DTO
-    public void recrutarAventureiro(String nome, AventureiroClasse classe, int nivel) {
-        Aventureiro aventureiro = new Aventureiro(this.organizacao, this, nome, classe, nivel);
-        this.aventureiros.add(aventureiro);
-        this.organizacao.adicionarAventureiro(aventureiro);
+    public void adicionarAventureiro(Aventureiro aventureiro) {
+        this.aventureiros.add(Objects.requireNonNull(aventureiro, "O aventureiro não pode ser nulo"));
+        aventureiro.definirUsuario(this);
+    }
+
+    public void registrarLogin() {
+        this.ultimoLoginEm = LocalDateTime.now();
     }
 }
