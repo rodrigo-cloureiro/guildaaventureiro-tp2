@@ -19,13 +19,13 @@ import java.util.Set;
 @Table(
         name = "aventureiros",
         schema = "aventura",
-        /*check = {
-                @CheckConstraint(
+        check = {
+                /*@CheckConstraint(
                         name = "ck_aventureiros_classe",
                         constraint = "classe IN ('GUERREIRO', 'MAGO', 'ARQUEIRO', 'CLERIGO', 'LADINO')"
-                ),
+                ),*/
                 @CheckConstraint(name = "ck_aventureiros_nivel", constraint = "nivel >= 1")
-        },*/
+        },
         indexes = {
                 @Index(
                         name = "idx_aventureiros_org_classe_nivel",
@@ -84,7 +84,6 @@ public class Aventureiro {
     @Column(nullable = false)
     private AventureiroClasse classe;
 
-    @Min(value = 1, message = "O nível deve ser maior ou igual a 1")
     @Column(nullable = false)
     private int nivel;
 
@@ -102,31 +101,31 @@ public class Aventureiro {
     protected Aventureiro() {
     }
 
-    public Aventureiro(
-            Organizacao organizacao,
-            Usuario usuario,
-            String nome,
-            AventureiroClasse classe,
-            int nivel
-    ) {
-        this.organizacao = Objects.requireNonNull(organizacao, "A organização é obrigatória");
-        this.usuario = Objects.requireNonNull(usuario, "O usuário é obrigatório");
+    public Aventureiro(String nome, AventureiroClasse classe, int nivel) {
         this.nome = nome;
         this.classe = classe;
         this.nivel = nivel;
     }
 
-    public void encerrarVinculo() {
+    public void desativar() {
         this.ativo = false;
     }
 
-    public void recrutar() {
+    public void ativar() {
         this.ativo = true;
     }
 
+    public void definirOrganizacao(Organizacao organizacao) {
+        this.organizacao = organizacao;
+    }
+
+    public void definirUsuario(Usuario usuario) {
+        this.usuario = Objects.requireNonNull(usuario, "O usuário é obrigatório");
+    }
+
     public void definirCompanheiro(Companheiro companheiro) {
-        companheiro.definirAventureiro(this);
         this.companheiro = companheiro;
+        companheiro.definirAventureiro(this);
     }
 
     public void removerCompanheiro() {
