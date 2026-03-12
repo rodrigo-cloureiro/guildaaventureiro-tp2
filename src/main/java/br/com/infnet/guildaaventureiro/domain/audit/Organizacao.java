@@ -64,11 +64,11 @@ public class Organizacao {
         this.nome = Objects.requireNonNull(nome, "O nome é obrigatório");
     }
 
-    public void ativarOrganizacao() {
+    public void ativar() {
         this.ativo = true;
     }
 
-    public void desativarOrganizacao() {
+    public void desativar() {
         this.ativo = false;
     }
 
@@ -78,5 +78,11 @@ public class Organizacao {
 
     public void adicionarAventureiro(Aventureiro aventureiro) {
         this.aventureiros.add(aventureiro);
+        aventureiro.definirOrganizacao(this);
+    }
+
+    public void removerAventureiro(Aventureiro aventureiro) {
+        this.aventureiros.remove(aventureiro);
+        aventureiro.definirOrganizacao(null);
     }
 }
