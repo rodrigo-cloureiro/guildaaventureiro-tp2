@@ -36,15 +36,13 @@ public class AventureiroRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        this.organizacao = organizacaoRepository.findById(1L).orElse(null);
-        this.usuario = usuarioRepository.findById(1L).orElse(null);
-        this.aventureiro = new Aventureiro(
-                organizacao,
-                usuario,
-                "Rick Forjafogo",
-                AventureiroClasse.ARQUEIRO,
-                100
-        );
+        // id fixo considerando que o teste rodará com um banco de teste populado
+        this.usuario = usuarioRepository.findById(1L).orElseThrow();
+
+        this.aventureiro = new Aventureiro("Rick Forjafogo", AventureiroClasse.ARQUEIRO, 100);
+
+        this.usuario.adicionarAventureiro(this.aventureiro);
+        this.usuario.getOrganizacao().adicionarAventureiro(this.aventureiro);
     }
 
     @AfterEach
@@ -72,6 +70,8 @@ public class AventureiroRepositoryTest {
         assertEquals(AventureiroClasse.ARQUEIRO, aventureiroDb.getClasse());
         assertEquals(100, aventureiroDb.getNivel());
         assertTrue(aventureiroDb.isAtivo());
+        assertEquals(this.usuario.getId(), aventureiroDb.getUsuario().getId());
+        assertNotNull(aventureiroDb.getOrganizacao());
     }
 
     @Test

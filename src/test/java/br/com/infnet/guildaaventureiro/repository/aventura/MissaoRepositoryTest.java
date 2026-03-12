@@ -34,13 +34,9 @@ public class MissaoRepositoryTest {
     public void setUp() {
         this.usuario = usuarioRepository.findById(1L)
                 .orElseThrow();
-        this.aventureiro = new Aventureiro(
-                usuario.getOrganizacao(),
-                usuario,
-                "Rodrigo",
-                AventureiroClasse.GUERREIRO,
-                100
-        );
+        this.aventureiro = new Aventureiro("Rodrigo", AventureiroClasse.GUERREIRO, 100);
+        this.usuario.adicionarAventureiro(this.aventureiro);
+        this.usuario.getOrganizacao().adicionarAventureiro(this.aventureiro);
     }
 
     @Test
