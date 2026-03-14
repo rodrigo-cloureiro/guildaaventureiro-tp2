@@ -1,14 +1,12 @@
 package br.com.infnet.guildaaventureiro.controller;
 
-import br.com.infnet.guildaaventureiro.dto.AventureiroCreate;
-import br.com.infnet.guildaaventureiro.dto.AventureiroFiltroRequest;
-import br.com.infnet.guildaaventureiro.dto.AventureiroProfileResponse;
-import br.com.infnet.guildaaventureiro.dto.AventureiroResponse;
+import br.com.infnet.guildaaventureiro.dto.*;
 import br.com.infnet.guildaaventureiro.service.AventureiroService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,26 +25,15 @@ public class AventureiroController {
     @GetMapping(value = "")
     public ResponseEntity<List<AventureiroResponse>> listarAventureiros(
             @Valid AventureiroFiltroRequest filtro,
-            @RequestHeader(value = "X-Page", required = false, defaultValue = "0")
-            int page,
-            @RequestHeader(value = "X-Size", required = false, defaultValue = "10")
-            int size,
-            @RequestHeader(value = "X-Sort-By", required = false, defaultValue = "id")
-            String sortBy,
-            @RequestHeader(value = "X-Sort-Direction", required = false, defaultValue = "ASC")
-            String sortDirection
+            @PageableDefault(page = 0, size = 10) Pageable pageable
     ) {
-        Sort sort = Sort.by(
-                sortDirection.equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC,
-                sortBy
-        );
-        Page<AventureiroResponse> aventureiroPage = aventureiroService.listar(filtro, page, size, sort);
+        Page<AventureiroResponse> aventureirosPage = aventureiroService.listar(filtro, pageable);
         return ResponseEntity.ok()
-                .header("X-Page", String.valueOf(aventureiroPage.getNumber()))
-                .header("X-Size", String.valueOf(aventureiroPage.getSize()))
-                .header("X-Total-Count", String.valueOf(aventureiroPage.getNumberOfElements()))
-                .header("X-Total-Pages", String.valueOf(aventureiroPage.getTotalPages()))
-                .body(aventureiroPage.getContent());
+                .header("X-Page", String.valueOf(aventureirosPage.getNumber()))
+                .header("X-Size", String.valueOf(aventureirosPage.getSize()))
+                .header("X-Total-Count", String.valueOf(aventureirosPage.getNumberOfElements()))
+                .header("X-Total-Pages", String.valueOf(aventureirosPage.getTotalPages()))
+                .body(aventureirosPage.getContent());
     }
 
     // =========================

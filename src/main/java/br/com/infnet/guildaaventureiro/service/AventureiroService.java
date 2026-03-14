@@ -5,10 +5,7 @@ import br.com.infnet.guildaaventureiro.domain.audit.Usuario;
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
 import br.com.infnet.guildaaventureiro.domain.aventura.ParticipacaoMissao;
-import br.com.infnet.guildaaventureiro.dto.AventureiroCreate;
-import br.com.infnet.guildaaventureiro.dto.AventureiroFiltroRequest;
-import br.com.infnet.guildaaventureiro.dto.AventureiroProfileResponse;
-import br.com.infnet.guildaaventureiro.dto.AventureiroResponse;
+import br.com.infnet.guildaaventureiro.dto.*;
 import br.com.infnet.guildaaventureiro.mapper.AventureiroMapper;
 import br.com.infnet.guildaaventureiro.repository.audit.UsuarioRepository;
 import br.com.infnet.guildaaventureiro.repository.aventura.AventureiroRepository;
@@ -16,9 +13,7 @@ import br.com.infnet.guildaaventureiro.repository.aventura.ParticipacaoMissaoRep
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,17 +27,7 @@ public class AventureiroService {
     // ===================
     // Listar Aventureiros
     // ===================
-    public Page<AventureiroResponse> listar(
-            AventureiroFiltroRequest filtro,
-            int pageNumber,
-            int pageSize,
-            Sort sort
-    ) {
-        Pageable pageable = PageRequest.of(
-                pageNumber,
-                pageSize,
-                sort
-        );
+    public Page<AventureiroResponse> listar(AventureiroFiltroRequest filtro, Pageable pageable) {
         return aventureiroRepository.findByStatusAndClasseAndNivelMinimo(
                 filtro.status(),
                 filtro.classe(),
