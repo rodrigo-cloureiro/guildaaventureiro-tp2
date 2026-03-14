@@ -27,12 +27,19 @@ public class AventureiroService {
     // ===================
     // Listar Aventureiros
     // ===================
-    public Page<AventureiroResponse> listar(AventureiroFiltroRequest filtro, Pageable pageable) {
-        return aventureiroRepository.findByStatusAndClasseAndNivelMinimo(
+    public PagedResponse<AventureiroResponse> listar(AventureiroFiltroRequest filtro, Pageable pageable) {
+        Page<AventureiroResponse> responsePage = aventureiroRepository.findByStatusAndClasseAndNivelMinimo(
                 filtro.status(),
                 filtro.classe(),
                 filtro.nivelMinimo(),
                 pageable
+        );
+        return new PagedResponse<>(
+                responsePage.getNumber(),
+                responsePage.getSize(),
+                responsePage.getTotalElements(),
+                responsePage.getTotalPages(),
+                responsePage.getContent()
         );
     }
 
@@ -63,7 +70,7 @@ public class AventureiroService {
         return new PagedResponse<>(
                 responsePage.getNumber(),
                 responsePage.getSize(),
-                responsePage.getNumberOfElements(),
+                responsePage.getTotalElements(),
                 responsePage.getTotalPages(),
                 responsePage.getContent()
         );
