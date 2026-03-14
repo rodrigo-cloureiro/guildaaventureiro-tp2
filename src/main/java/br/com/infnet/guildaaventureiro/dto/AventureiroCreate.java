@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record AventureiroCreateDto(
+public record AventureiroCreate(
         @NotBlank(message = "O nome não pode ser vazio")
         @Size(max = 120, message = "O nome deve possuir no máximo 120 caracteres")
         String nome,

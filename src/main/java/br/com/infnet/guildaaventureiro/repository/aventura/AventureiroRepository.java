@@ -2,7 +2,7 @@ package br.com.infnet.guildaaventureiro.repository.aventura;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.AventureiroClasse;
-import br.com.infnet.guildaaventureiro.dto.AventureiroResponseDto;
+import br.com.infnet.guildaaventureiro.dto.AventureiroResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AventureiroRepository extends JpaRepository<Aventureiro, Long> {
     @Query(value = """
-            SELECT new br.com.infnet.guildaaventureiro.dto.AventureiroResponseDto(
+            SELECT new br.com.infnet.guildaaventureiro.dto.AventureiroResponse(
                         a.id, a.nome, a.classe, a.nivel, a.ativo
             )
             FROM Aventureiro a
@@ -21,7 +21,7 @@ public interface AventureiroRepository extends JpaRepository<Aventureiro, Long> 
             (:classe IS NULL OR a.classe = :classe) AND
             (:nivelMinimo IS NULL OR a.nivel >= :nivelMinimo)
             """)
-    Page<AventureiroResponseDto> findByStatusAndClasseAndNivelMinimo(
+    Page<AventureiroResponse> findByStatusAndClasseAndNivelMinimo(
             @Param(value = "status") Boolean status,
             @Param(value = "classe") AventureiroClasse classe,
             @Param(value = "nivelMinimo") Integer nivelMinimoInteger,

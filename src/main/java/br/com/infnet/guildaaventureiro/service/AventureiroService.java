@@ -5,10 +5,10 @@ import br.com.infnet.guildaaventureiro.domain.audit.Usuario;
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
 import br.com.infnet.guildaaventureiro.domain.aventura.ParticipacaoMissao;
-import br.com.infnet.guildaaventureiro.dto.AventureiroCreateDto;
-import br.com.infnet.guildaaventureiro.dto.AventureiroFiltroRequestDto;
+import br.com.infnet.guildaaventureiro.dto.AventureiroCreate;
+import br.com.infnet.guildaaventureiro.dto.AventureiroFiltroRequest;
 import br.com.infnet.guildaaventureiro.dto.AventureiroProfileResponse;
-import br.com.infnet.guildaaventureiro.dto.AventureiroResponseDto;
+import br.com.infnet.guildaaventureiro.dto.AventureiroResponse;
 import br.com.infnet.guildaaventureiro.mapper.AventureiroMapper;
 import br.com.infnet.guildaaventureiro.repository.audit.UsuarioRepository;
 import br.com.infnet.guildaaventureiro.repository.aventura.AventureiroRepository;
@@ -32,8 +32,8 @@ public class AventureiroService {
     // ===================
     // Listar Aventureiros
     // ===================
-    public Page<AventureiroResponseDto> listar(
-            AventureiroFiltroRequestDto filtro,
+    public Page<AventureiroResponse> listar(
+            AventureiroFiltroRequest filtro,
             int pageNumber,
             int pageSize,
             Sort sort
@@ -74,7 +74,7 @@ public class AventureiroService {
     // Registrar Aventureiro
     // =====================
     @Transactional(readOnly = false)
-    public AventureiroResponseDto criar(AventureiroCreateDto dto) {
+    public AventureiroResponse criar(AventureiroCreate dto) {
         Usuario usuario = usuarioRepository.findById(dto.usuarioId())
                 .orElseThrow(); // TODO Implementar exceção
         Organizacao organizacao = usuario.getOrganizacao();

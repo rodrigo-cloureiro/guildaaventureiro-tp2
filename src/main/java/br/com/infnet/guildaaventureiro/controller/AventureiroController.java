@@ -1,9 +1,9 @@
 package br.com.infnet.guildaaventureiro.controller;
 
-import br.com.infnet.guildaaventureiro.dto.AventureiroCreateDto;
-import br.com.infnet.guildaaventureiro.dto.AventureiroFiltroRequestDto;
+import br.com.infnet.guildaaventureiro.dto.AventureiroCreate;
+import br.com.infnet.guildaaventureiro.dto.AventureiroFiltroRequest;
 import br.com.infnet.guildaaventureiro.dto.AventureiroProfileResponse;
-import br.com.infnet.guildaaventureiro.dto.AventureiroResponseDto;
+import br.com.infnet.guildaaventureiro.dto.AventureiroResponse;
 import br.com.infnet.guildaaventureiro.service.AventureiroService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +25,8 @@ public class AventureiroController {
     // Listar Aventureiros
     // ===================
     @GetMapping(value = "")
-    public ResponseEntity<List<AventureiroResponseDto>> listarAventureiros(
-            @Valid AventureiroFiltroRequestDto filtro,
+    public ResponseEntity<List<AventureiroResponse>> listarAventureiros(
+            @Valid AventureiroFiltroRequest filtro,
             @RequestHeader(value = "X-Page", required = false, defaultValue = "0")
             int page,
             @RequestHeader(value = "X-Size", required = false, defaultValue = "10")
@@ -40,7 +40,7 @@ public class AventureiroController {
                 sortDirection.equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC,
                 sortBy
         );
-        Page<AventureiroResponseDto> aventureiroPage = aventureiroService.listar(filtro, page, size, sort);
+        Page<AventureiroResponse> aventureiroPage = aventureiroService.listar(filtro, page, size, sort);
         return ResponseEntity.ok()
                 .header("X-Page", String.valueOf(aventureiroPage.getNumber()))
                 .header("X-Size", String.valueOf(aventureiroPage.getSize()))
@@ -62,7 +62,7 @@ public class AventureiroController {
     // Registrar Aventureiro
     // =====================
     @PostMapping(value = "")
-    public ResponseEntity<AventureiroResponseDto> registrarAventureiro(@RequestBody @Valid AventureiroCreateDto dto) {
+    public ResponseEntity<AventureiroResponse> registrarAventureiro(@RequestBody @Valid AventureiroCreate dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(aventureiroService.criar(dto));
     }

@@ -2,14 +2,14 @@ package br.com.infnet.guildaaventureiro.mapper;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
-import br.com.infnet.guildaaventureiro.dto.AventureiroCreateDto;
+import br.com.infnet.guildaaventureiro.dto.AventureiroCreate;
 import br.com.infnet.guildaaventureiro.dto.AventureiroProfileResponse;
-import br.com.infnet.guildaaventureiro.dto.AventureiroResponseDto;
+import br.com.infnet.guildaaventureiro.dto.AventureiroResponse;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AventureiroMapper {
-    public static Aventureiro toEntity(AventureiroCreateDto dto) {
+    public static Aventureiro toEntity(AventureiroCreate dto) {
         return new Aventureiro(
                 dto.nome(),
                 dto.classe(),
@@ -17,8 +17,8 @@ public class AventureiroMapper {
         );
     }
 
-    public static AventureiroResponseDto toResponse(Aventureiro aventureiro) {
-        return new AventureiroResponseDto(aventureiro);
+    public static AventureiroResponse toResponse(Aventureiro aventureiro) {
+        return new AventureiroResponse(aventureiro);
     }
 
     public static AventureiroProfileResponse toProfileResponse(
