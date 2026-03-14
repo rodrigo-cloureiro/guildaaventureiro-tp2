@@ -55,6 +55,20 @@ public class AventureiroService {
         return AventureiroMapper.toProfileResponse(aventureiro, totalParticipacoes, ultimaMissao);
     }
 
+    // ===========================
+    // Buscar Aventureiro por Nome
+    // ===========================
+    public PagedResponse<AventureiroResponse> buscarPorNome(String nome, Pageable pageable) {
+        Page<AventureiroResponse> responsePage = aventureiroRepository.findByNomeContainingIgnoreCase(nome, pageable);
+        return new PagedResponse<>(
+                responsePage.getNumber(),
+                responsePage.getSize(),
+                responsePage.getNumberOfElements(),
+                responsePage.getTotalPages(),
+                responsePage.getContent()
+        );
+    }
+
     // =====================
     // Registrar Aventureiro
     // =====================

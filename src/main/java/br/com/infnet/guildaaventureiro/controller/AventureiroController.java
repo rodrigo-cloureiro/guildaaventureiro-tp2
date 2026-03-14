@@ -45,6 +45,23 @@ public class AventureiroController {
                 .body(aventureiroService.perfil(id));
     }
 
+    // ===========================
+    // Buscar Aventureiro por Nome
+    // ===========================
+    @GetMapping(value = "/q")
+    public ResponseEntity<PagedResponse<AventureiroResponse>> listarAventureirosPorNome(
+            @RequestParam(value = "nome") String nome,
+            @PageableDefault(page = 0, size = 10) Pageable pageable
+    ) {
+        PagedResponse<AventureiroResponse> pagedResponse = aventureiroService.buscarPorNome(nome, pageable);
+        return ResponseEntity.ok()
+                .header("X-Page", String.valueOf(pagedResponse.page()))
+                .header("X-Size", String.valueOf(pagedResponse.size()))
+                .header("X-Total-Count", String.valueOf(pagedResponse.total()))
+                .header("X-Total-Pages", String.valueOf(pagedResponse.totalPages()))
+                .body(pagedResponse);
+    }
+
     // =====================
     // Registrar Aventureiro
     // =====================
