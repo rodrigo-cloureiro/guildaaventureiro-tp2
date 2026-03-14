@@ -49,7 +49,7 @@ public class AventureiroService {
     // Registrar Aventureiro
     // =====================
     @Transactional(readOnly = false)
-    public Aventureiro criar(AventureiroCreateDto dto) {
+    public AventureiroResponseDto criar(AventureiroCreateDto dto) {
         Usuario usuario = usuarioRepository.findById(dto.usuarioId())
                 .orElseThrow(); // TODO Implementar exceção
         Organizacao organizacao = usuario.getOrganizacao();
@@ -58,14 +58,6 @@ public class AventureiroService {
         usuario.adicionarAventureiro(aventureiro);
         organizacao.adicionarAventureiro(aventureiro);
 
-        /* TODO
-            usuarioRepository.findById... usuario.adicionarAventureiro... organizacao.adicionarAventureiro...
-            aventureiroRepository.save...
-            Os métodos acima geram queries => suarioRepository.findById e aventureiroRepository.save fazem sentido e são
-            esperadas. O problema ocorre com as outras, pois eles geram queries que realizam join com companheiro. Esses
-            métodos estão sendo invocados para atualizar em memória. Qual melhor caminho a prosseguir?
-         */
-
-        return aventureiroRepository.save(aventureiro);
+        return AventureiroMapper.toResponse(aventureiroRepository.save(aventureiro));
     }
 }

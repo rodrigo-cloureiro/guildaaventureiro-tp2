@@ -1,10 +1,8 @@
 package br.com.infnet.guildaaventureiro.controller;
 
-import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.dto.AventureiroCreateDto;
 import br.com.infnet.guildaaventureiro.dto.AventureiroFiltroRequestDto;
 import br.com.infnet.guildaaventureiro.dto.AventureiroResponseDto;
-import br.com.infnet.guildaaventureiro.mapper.AventureiroMapper;
 import br.com.infnet.guildaaventureiro.service.AventureiroService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -55,8 +53,7 @@ public class AventureiroController {
     // =====================
     @PostMapping(value = "")
     public ResponseEntity<AventureiroResponseDto> registrarAventureiro(@RequestBody @Valid AventureiroCreateDto dto) {
-        Aventureiro aventureiro = aventureiroService.criar(dto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(AventureiroMapper.toResponse(aventureiro));
+                .body(aventureiroService.criar(dto));
     }
 }
