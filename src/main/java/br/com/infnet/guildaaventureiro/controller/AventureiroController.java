@@ -2,6 +2,7 @@ package br.com.infnet.guildaaventureiro.controller;
 
 import br.com.infnet.guildaaventureiro.dto.AventureiroCreateDto;
 import br.com.infnet.guildaaventureiro.dto.AventureiroFiltroRequestDto;
+import br.com.infnet.guildaaventureiro.dto.AventureiroProfileResponse;
 import br.com.infnet.guildaaventureiro.dto.AventureiroResponseDto;
 import br.com.infnet.guildaaventureiro.service.AventureiroService;
 import jakarta.validation.Valid;
@@ -46,6 +47,15 @@ public class AventureiroController {
                 .header("X-Total-Count", String.valueOf(aventureiroPage.getNumberOfElements()))
                 .header("X-Total-Pages", String.valueOf(aventureiroPage.getTotalPages()))
                 .body(aventureiroPage.getContent());
+    }
+
+    // =========================
+    // Buscar Aventureiro por ID
+    // =========================
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<AventureiroProfileResponse> perfilAventureiro(@PathVariable Long id) {
+        return ResponseEntity.ok()
+                .body(aventureiroService.perfil(id));
     }
 
     // =====================
