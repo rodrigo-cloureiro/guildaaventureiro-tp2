@@ -46,11 +46,11 @@ public class AventureiroController {
     // Buscar Aventureiro por Nome
     // ===========================
     @GetMapping(value = "/q")
-    public ResponseEntity<PagedResponse<AventureiroResponse>> listarAventureirosPorNome(
-            @RequestParam(value = "nome") String nome,
+    public ResponseEntity<PagedResponse<AventureiroMinimalResponse>> listarAventureirosPorNome(
+            @RequestParam(value = "nome", defaultValue = "") String nome,
             @PageableDefault(page = 0, size = 10) Pageable pageable
     ) {
-        PagedResponse<AventureiroResponse> pagedResponse = aventureiroService.buscarPorNome(nome, pageable);
+        PagedResponse<AventureiroMinimalResponse> pagedResponse = aventureiroService.buscarPorNome(nome, pageable);
         return ResponseEntity.ok()
                 .header("X-Page", String.valueOf(pagedResponse.page()))
                 .header("X-Size", String.valueOf(pagedResponse.size()))
