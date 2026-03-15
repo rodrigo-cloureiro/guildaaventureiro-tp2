@@ -1,6 +1,7 @@
 package br.com.infnet.guildaaventureiro.controller;
 
 import br.com.infnet.guildaaventureiro.dto.PagedResponse;
+import br.com.infnet.guildaaventureiro.dto.missao.MissaoDetailedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoFiltroRequest;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoResponse;
 import br.com.infnet.guildaaventureiro.service.MissaoService;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class MissaoController {
     private final MissaoService missaoService;
 
+    // ==============
+    // Listar Missões
+    // ==============
     @GetMapping(value = "")
     public ResponseEntity<PagedResponse<MissaoResponse>> listarMissoes(
             @Valid MissaoFiltroRequest filtro,
@@ -31,5 +36,14 @@ public class MissaoController {
                 .header("X-Total-Count", String.valueOf(pagedResponse.total()))
                 .header("X-Total-Pages", String.valueOf(pagedResponse.totalPages()))
                 .body(pagedResponse);
+    }
+
+    // ====================
+    // Buscar Missão por ID
+    // ====================
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<MissaoDetailedResponse> detalharMissao(@PathVariable Long id) {
+        return ResponseEntity.ok()
+                .body(missaoService.missaoDetalhada(id));
     }
 }
