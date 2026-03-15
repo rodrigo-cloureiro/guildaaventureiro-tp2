@@ -1,15 +1,15 @@
-package br.com.infnet.guildaaventureiro.dto;
+package br.com.infnet.guildaaventureiro.dto.missao;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.NivelPerigoMissao;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.StatusMissao;
 
-public record MissaoResponse(
+public record MissaoMinimalResponse(
         String titulo,
         NivelPerigoMissao nivelPerigo,
         StatusMissao status
 ) {
-    public MissaoResponse(Missao missao) {
+    public MissaoMinimalResponse(Missao missao) {
         this(
                 missao.getTitulo(),
                 missao.getNivelPerigo(),
