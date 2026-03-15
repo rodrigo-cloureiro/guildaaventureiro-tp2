@@ -2,6 +2,7 @@ package br.com.infnet.guildaaventureiro.domain.aventura;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.CompanheiroEspecie;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
@@ -16,11 +17,13 @@ import org.hibernate.validator.constraints.Range;
 )
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Companheiro {
     @Id
+    @EqualsAndHashCode.Include
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @PrimaryKeyJoinColumn(
             name = "aventureiro_id",
