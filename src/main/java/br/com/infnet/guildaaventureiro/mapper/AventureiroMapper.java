@@ -3,6 +3,7 @@ package br.com.infnet.guildaaventureiro.mapper;
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
 import br.com.infnet.guildaaventureiro.dto.AventureiroCreate;
+import br.com.infnet.guildaaventureiro.dto.AventureiroMinimalResponse;
 import br.com.infnet.guildaaventureiro.dto.AventureiroProfileResponse;
 import br.com.infnet.guildaaventureiro.dto.AventureiroResponse;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,10 @@ public class AventureiroMapper {
 
     public static AventureiroResponse toResponse(Aventureiro aventureiro) {
         return new AventureiroResponse(aventureiro);
+    }
+
+    public static AventureiroMinimalResponse toMinimalResponse(Aventureiro aventureiro) {
+        return new AventureiroMinimalResponse(aventureiro);
     }
 
     public static AventureiroProfileResponse toProfileResponse(
