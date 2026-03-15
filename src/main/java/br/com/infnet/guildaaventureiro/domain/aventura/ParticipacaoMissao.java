@@ -3,6 +3,7 @@ package br.com.infnet.guildaaventureiro.domain.aventura;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.PapelMissao;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -18,8 +19,10 @@ import java.util.Objects;
         }
 )
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ParticipacaoMissao {
     @EmbeddedId
+    @EqualsAndHashCode.Include
     private final ParticipacaoMissaoId id = new ParticipacaoMissaoId();
 
     @ManyToOne(fetch = FetchType.LAZY)

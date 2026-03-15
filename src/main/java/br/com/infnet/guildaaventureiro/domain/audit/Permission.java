@@ -1,6 +1,7 @@
 package br.com.infnet.guildaaventureiro.domain.audit;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ import java.util.Set;
 )
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "permissions_id")
@@ -26,6 +28,7 @@ public class Permission {
             schema = "audit",
             allocationSize = 1
     )
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Column(nullable = false, length = 80, unique = true)

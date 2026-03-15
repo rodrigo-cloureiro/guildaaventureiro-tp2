@@ -1,6 +1,7 @@
 package br.com.infnet.guildaaventureiro.domain.audit;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,8 +19,10 @@ import java.time.LocalDateTime;
 )
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UsuarioRole {
     @EmbeddedId
+    @EqualsAndHashCode.Include
     private UsuarioRoleId usuarioRoleId;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,6 +1,7 @@
 package br.com.infnet.guildaaventureiro.domain.audit;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 )
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ApiKey {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "api_keys_id")
@@ -29,6 +31,7 @@ public class ApiKey {
             schema = "audit",
             allocationSize = 1
     )
+    @EqualsAndHashCode.Include
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

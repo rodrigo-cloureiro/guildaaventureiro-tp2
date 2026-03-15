@@ -4,6 +4,7 @@ import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.audit.enums.UsuarioStatus;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.AventureiroClasse;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -33,6 +34,7 @@ import java.util.Set;
         }
 )
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarios_id")
@@ -42,6 +44,7 @@ public class Usuario {
             schema = "audit",
             allocationSize = 1
     )
+    @EqualsAndHashCode.Include
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
