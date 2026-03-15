@@ -65,8 +65,10 @@ public class AventureiroService {
     // ===========================
     // Buscar Aventureiro por Nome
     // ===========================
-    public PagedResponse<AventureiroResponse> buscarPorNome(String nome, Pageable pageable) {
-        Page<AventureiroResponse> responsePage = aventureiroRepository.findByNomeContainingIgnoreCase(nome, pageable);
+    @Transactional(readOnly = true)
+    public PagedResponse<AventureiroMinimalResponse> buscarPorNome(String nome, Pageable pageable) {
+        Page<AventureiroMinimalResponse> responsePage = aventureiroRepository
+                .findByNomeContainingIgnoreCase(nome, pageable);
         return new PagedResponse<>(
                 responsePage.getNumber(),
                 responsePage.getSize(),
