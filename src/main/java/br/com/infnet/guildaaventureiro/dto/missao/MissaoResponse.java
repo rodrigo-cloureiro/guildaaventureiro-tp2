@@ -11,9 +11,9 @@ public record MissaoResponse(
         String titulo,
         StatusMissao status,
         NivelPerigoMissao nivelPerigo,
-        LocalDateTime criacao,
-        LocalDateTime inicio,
-        LocalDateTime termino
+        LocalDateTime criadaEm,
+        LocalDateTime iniciouEm,
+        LocalDateTime terminouEm
 ) {
     public MissaoResponse(Missao missao) {
         this(
