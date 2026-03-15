@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/aventureiro")
+@RequestMapping(value = "/aventureiros")
 public class AventureiroController {
     private final AventureiroService aventureiroService;
 
@@ -45,7 +45,7 @@ public class AventureiroController {
     // ===========================
     // Buscar Aventureiro por Nome
     // ===========================
-    @GetMapping(value = "/q")
+    @GetMapping(value = "/procurar")
     public ResponseEntity<PagedResponse<AventureiroMinimalResponse>> listarAventureirosPorNome(
             @RequestParam(value = "nome", defaultValue = "") String nome,
             @PageableDefault(page = 0, size = 10) Pageable pageable
