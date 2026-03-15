@@ -2,6 +2,7 @@ package br.com.infnet.guildaaventureiro.repository.aventura;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.AventureiroClasse;
+import br.com.infnet.guildaaventureiro.dto.AventureiroMinimalResponse;
 import br.com.infnet.guildaaventureiro.dto.AventureiroResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,5 +29,15 @@ public interface AventureiroRepository extends JpaRepository<Aventureiro, Long> 
             Pageable pageable
     );
 
-    Page<AventureiroResponse> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
+    @Query(value = """
+            SELECT new br.com.infnet.guildaaventureiro.dto.AventureiroMinimalResponse(
+                        a.id, a.nome, a.classe, a.organizacao.nome
+            )
+            FROM Aventureiro a
+            WHERE LOWER(a.nome) LIKE CONCAT('%', LOWER(:nome), '%')
+            """)
+    Page<AventureiroMinimalResponse> findByNomeContainingIgnoreCase(
+            @Param(value = "nome") String nome,
+            Pageable pageable
+    );
 }
