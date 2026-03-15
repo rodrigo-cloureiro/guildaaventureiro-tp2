@@ -84,7 +84,7 @@ public class AventureiroService {
     @Transactional(readOnly = false)
     public AventureiroResponse criar(AventureiroCreate dto) {
         Usuario usuario = usuarioRepository.findById(dto.usuarioId())
-                .orElseThrow(); // TODO Implementar exceção
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
         Organizacao organizacao = usuario.getOrganizacao();
 
         Aventureiro aventureiro = AventureiroMapper.toEntity(dto);
