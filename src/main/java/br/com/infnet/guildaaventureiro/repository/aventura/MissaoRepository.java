@@ -14,15 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MissaoRepository extends JpaRepository<Missao, Long> {
     @Query(value = """
-            SELECT new br.com.infnet.guildaaventureiro.dto.missao.MissaoResponse(
-                        m.id,
-                        m.titulo,
-                        m.status,
-                        m.nivelPerigo,
-                        m.dataCriacao,
-                        m.dataInicio,
-                        m.dataTermino
-            )
+            SELECT new br.com.infnet.guildaaventureiro.dto.missao.MissaoResponse(m)
             FROM Missao m
             WHERE (:status IS NULL OR m.status = :status) AND
             (:nivelPerigo IS NULL OR m.nivelPerigo = :nivelPerigo)
