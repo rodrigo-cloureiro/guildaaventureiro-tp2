@@ -2,10 +2,7 @@ package br.com.infnet.guildaaventureiro.mapper;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
-import br.com.infnet.guildaaventureiro.dto.AventureiroCreate;
-import br.com.infnet.guildaaventureiro.dto.AventureiroMinimalResponse;
-import br.com.infnet.guildaaventureiro.dto.AventureiroProfileResponse;
-import br.com.infnet.guildaaventureiro.dto.AventureiroResponse;
+import br.com.infnet.guildaaventureiro.dto.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -37,7 +34,7 @@ public class AventureiroMapper {
                         CompanheiroMapper.toResponse(aventureiro.getCompanheiro()) :
                         null,
                 totalParticipacoesEmMissao,
-                missao != null ? MissaoMapper.toResponse(missao) : null
+                missao != null ? MissaoMapper.toMinimalResponse(missao) : null
         );
     }
 }
