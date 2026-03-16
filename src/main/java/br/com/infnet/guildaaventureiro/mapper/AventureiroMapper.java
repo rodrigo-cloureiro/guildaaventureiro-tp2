@@ -1,6 +1,7 @@
 package br.com.infnet.guildaaventureiro.mapper;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
+import br.com.infnet.guildaaventureiro.domain.aventura.Companheiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
 import br.com.infnet.guildaaventureiro.dto.*;
 import org.springframework.stereotype.Component;
@@ -35,6 +36,13 @@ public class AventureiroMapper {
                         null,
                 totalParticipacoesEmMissao,
                 missao != null ? MissaoMapper.toMinimalResponse(missao) : null
+        );
+    }
+
+    public static AventureiroCompanheiroResponse toCompanheiroResponse(String nome, Companheiro companheiro) {
+        return new AventureiroCompanheiroResponse(
+                nome,
+                CompanheiroMapper.toResponse(companheiro)
         );
     }
 }
