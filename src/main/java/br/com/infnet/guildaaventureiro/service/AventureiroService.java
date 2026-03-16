@@ -7,6 +7,7 @@ import br.com.infnet.guildaaventureiro.domain.aventura.Companheiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
 import br.com.infnet.guildaaventureiro.domain.aventura.ParticipacaoMissao;
 import br.com.infnet.guildaaventureiro.dto.*;
+import br.com.infnet.guildaaventureiro.dto.aventureiro.*;
 import br.com.infnet.guildaaventureiro.dto.companheiro.CompanheiroCreate;
 import br.com.infnet.guildaaventureiro.exception.aventura.CompanheiroException;
 import br.com.infnet.guildaaventureiro.mapper.AventureiroMapper;

@@ -1,7 +1,7 @@
 package br.com.infnet.guildaaventureiro.repository.aventura;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.ParticipacaoMissao;
-import br.com.infnet.guildaaventureiro.dto.AventureiroMissaoResponse;
+import br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMissaoResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

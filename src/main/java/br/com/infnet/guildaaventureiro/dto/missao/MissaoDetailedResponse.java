@@ -1,6 +1,6 @@
 package br.com.infnet.guildaaventureiro.dto.missao;
 
-import br.com.infnet.guildaaventureiro.dto.AventureiroMissaoResponse;
+import br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMissaoResponse;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import java.util.List;

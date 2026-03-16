@@ -1,4 +1,4 @@
-package br.com.infnet.guildaaventureiro.dto;
+package br.com.infnet.guildaaventureiro.dto.aventureiro;
 
 import br.com.infnet.guildaaventureiro.dto.companheiro.CompanheiroResponse;
 

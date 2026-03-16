@@ -1,7 +1,7 @@
 package br.com.infnet.guildaaventureiro.service;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
-import br.com.infnet.guildaaventureiro.dto.AventureiroMissaoResponse;
+import br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMissaoResponse;
 import br.com.infnet.guildaaventureiro.dto.PagedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoDetailedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoFiltroRequest;

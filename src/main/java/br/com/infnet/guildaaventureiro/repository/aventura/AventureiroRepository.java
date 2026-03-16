@@ -2,8 +2,8 @@ package br.com.infnet.guildaaventureiro.repository.aventura;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.AventureiroClasse;
-import br.com.infnet.guildaaventureiro.dto.AventureiroMinimalResponse;
-import br.com.infnet.guildaaventureiro.dto.AventureiroResponse;
+import br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMinimalResponse;
+import br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

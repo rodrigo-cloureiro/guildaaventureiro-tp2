@@ -1,4 +1,4 @@
-package br.com.infnet.guildaaventureiro.dto;
+package br.com.infnet.guildaaventureiro.dto.aventureiro;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.AventureiroClasse;

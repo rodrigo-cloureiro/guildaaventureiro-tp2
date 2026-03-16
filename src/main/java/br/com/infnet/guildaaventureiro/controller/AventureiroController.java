@@ -1,6 +1,7 @@
 package br.com.infnet.guildaaventureiro.controller;
 
 import br.com.infnet.guildaaventureiro.dto.*;
+import br.com.infnet.guildaaventureiro.dto.aventureiro.*;
 import br.com.infnet.guildaaventureiro.dto.companheiro.CompanheiroCreate;
 import br.com.infnet.guildaaventureiro.service.AventureiroService;
 import jakarta.validation.Valid;
