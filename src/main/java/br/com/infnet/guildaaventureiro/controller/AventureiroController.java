@@ -1,6 +1,7 @@
 package br.com.infnet.guildaaventureiro.controller;
 
 import br.com.infnet.guildaaventureiro.dto.*;
+import br.com.infnet.guildaaventureiro.dto.companheiro.CompanheiroCreate;
 import br.com.infnet.guildaaventureiro.service.AventureiroService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -66,5 +67,27 @@ public class AventureiroController {
     public ResponseEntity<AventureiroResponse> registrarAventureiro(@RequestBody @Valid AventureiroCreate dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(aventureiroService.criar(dto));
+    }
+
+    // ==================================
+    // Definir Companheiro do Aventureiro
+    // ==================================
+    // TODO Retornar uma Response com nome do Aventureiro e seu novo companheiro
+    @PostMapping(value = "/{id}/companheiro")
+    public ResponseEntity<Void> registrarCompanheiro(
+            @PathVariable Long id,
+            @RequestBody @Valid CompanheiroCreate dto
+    ) {
+        aventureiroService.definirCompanheiro(id, dto);
+        return ResponseEntity.noContent().build();
+    }
+
+    // ==================================
+    // Remover Companheiro do Aventureiro
+    // ==================================
+    @DeleteMapping(value = "/{id}/companheiro")
+    public ResponseEntity<Void> removerCompanheiro(@PathVariable Long id) {
+        aventureiroService.removerCompanheiro(id);
+        return ResponseEntity.noContent().build();
     }
 }
