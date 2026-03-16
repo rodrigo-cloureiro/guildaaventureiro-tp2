@@ -132,6 +132,7 @@ public class Aventureiro {
     }
 
     public void removerCompanheiro() {
+        this.companheiro.removerAventureiro();
         this.companheiro = null;
     }
 
