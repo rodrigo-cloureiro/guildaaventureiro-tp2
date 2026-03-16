@@ -1,5 +1,6 @@
 package br.com.infnet.guildaaventureiro.dto;
 
+import br.com.infnet.guildaaventureiro.dto.companheiro.CompanheiroResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoMinimalResponse;
 
 public record AventureiroProfileResponse(
