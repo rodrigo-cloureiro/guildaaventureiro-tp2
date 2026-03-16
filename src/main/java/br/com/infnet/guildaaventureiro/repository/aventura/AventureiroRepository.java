@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AventureiroRepository extends JpaRepository<Aventureiro, Long> {
     @Query(value = """
-            SELECT new br.com.infnet.guildaaventureiro.dto.AventureiroResponse(
+            SELECT new br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroResponse(
                         a.id, a.nome, a.classe, a.nivel, a.ativo
             )
             FROM Aventureiro a
@@ -30,7 +30,7 @@ public interface AventureiroRepository extends JpaRepository<Aventureiro, Long> 
     );
 
     @Query(value = """
-            SELECT new br.com.infnet.guildaaventureiro.dto.AventureiroMinimalResponse(
+            SELECT new br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMinimalResponse(
                         a.id, a.nome, a.classe, a.organizacao.nome
             )
             FROM Aventureiro a

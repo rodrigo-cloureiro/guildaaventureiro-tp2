@@ -17,7 +17,7 @@ public interface ParticipacaoMissaoRepository extends JpaRepository<Participacao
     Optional<ParticipacaoMissao> findTopByAventureiroIdOrderByDataRegistroDesc(Long id);
 
     @Query(value = """
-            SELECT new br.com.infnet.guildaaventureiro.dto.AventureiroMissaoResponse(
+            SELECT new br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMissaoResponse(
                         a.nome,
                         a.classe,
                         a.nivel,
