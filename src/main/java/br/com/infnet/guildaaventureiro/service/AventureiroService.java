@@ -3,9 +3,12 @@ package br.com.infnet.guildaaventureiro.service;
 import br.com.infnet.guildaaventureiro.domain.audit.Organizacao;
 import br.com.infnet.guildaaventureiro.domain.audit.Usuario;
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
+import br.com.infnet.guildaaventureiro.domain.aventura.Companheiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
 import br.com.infnet.guildaaventureiro.domain.aventura.ParticipacaoMissao;
 import br.com.infnet.guildaaventureiro.dto.*;
+import br.com.infnet.guildaaventureiro.dto.companheiro.CompanheiroCreate;
+import br.com.infnet.guildaaventureiro.exception.aventura.CompanheiroException;
 import br.com.infnet.guildaaventureiro.mapper.AventureiroMapper;
 import br.com.infnet.guildaaventureiro.repository.audit.UsuarioRepository;
 import br.com.infnet.guildaaventureiro.repository.aventura.AventureiroRepository;
@@ -92,5 +95,42 @@ public class AventureiroService {
         organizacao.adicionarAventureiro(aventureiro);
 
         return AventureiroMapper.toResponse(aventureiroRepository.save(aventureiro));
+    }
+
+    // ==================================
+    // Definir Companheiro do Aventureiro
+    // ==================================
+    @Transactional(readOnly = false)
+    public void definirCompanheiro(Long id, CompanheiroCreate dto) {
+        Aventureiro aventureiro = findById(id);
+
+        if (aventureiro.getCompanheiro() != null) {
+            throw new CompanheiroException("O aventureiro já possui companheiro");
+        }
+
+        aventureiro.definirCompanheiro(new Companheiro(
+                dto.nome(),
+                dto.especie(),
+                dto.lealdade()
+        ));
+    }
+
+    // ==================================
+    // Remover Companheiro do Aventureiro
+    // ==================================
+    @Transactional(readOnly = false)
+    public void removerCompanheiro(Long id) {
+        Aventureiro aventureiro = findById(id);
+
+        if (aventureiro.getCompanheiro() == null) {
+            throw new CompanheiroException("O aventureiro não possui companheiro");
+        }
+
+        aventureiro.removerCompanheiro();
+    }
+
+    private Aventureiro findById(Long id) {
+        return aventureiroRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Aventureiro não encontrado"));
     }
 }
