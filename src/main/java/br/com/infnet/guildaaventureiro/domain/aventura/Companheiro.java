@@ -51,7 +51,11 @@ public class Companheiro {
         this.lealdade = lealdade;
     }
 
-    public void definirAventureiro(Aventureiro aventureiro) {
+    void definirAventureiro(Aventureiro aventureiro) {
         this.aventureiro = aventureiro;
+    }
+
+    void removerAventureiro() {
+        this.aventureiro = null;
     }
 }
