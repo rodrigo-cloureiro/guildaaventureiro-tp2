@@ -72,14 +72,14 @@ public class AventureiroController {
     // ==================================
     // Definir Companheiro do Aventureiro
     // ==================================
-    // TODO Retornar uma Response com nome do Aventureiro e seu novo companheiro
     @PostMapping(value = "/{id}/companheiro")
-    public ResponseEntity<Void> registrarCompanheiro(
+    public ResponseEntity<AventureiroCompanheiroResponse> registrarCompanheiro(
             @PathVariable Long id,
             @RequestBody @Valid CompanheiroCreate dto
     ) {
-        aventureiroService.definirCompanheiro(id, dto);
-        return ResponseEntity.noContent().build();
+        AventureiroCompanheiroResponse aventureiroCompanheiroResponse = aventureiroService.definirCompanheiro(id, dto);
+        return ResponseEntity.ok()
+                .body(aventureiroCompanheiroResponse);
     }
 
     // ==================================

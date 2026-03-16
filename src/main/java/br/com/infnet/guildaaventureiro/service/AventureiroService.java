@@ -101,7 +101,7 @@ public class AventureiroService {
     // Definir Companheiro do Aventureiro
     // ==================================
     @Transactional(readOnly = false)
-    public void definirCompanheiro(Long id, CompanheiroCreate dto) {
+    public AventureiroCompanheiroResponse definirCompanheiro(Long id, CompanheiroCreate dto) {
         Aventureiro aventureiro = findById(id);
 
         if (aventureiro.getCompanheiro() != null) {
@@ -113,6 +113,11 @@ public class AventureiroService {
                 dto.especie(),
                 dto.lealdade()
         ));
+
+        return AventureiroMapper.toCompanheiroResponse(
+                aventureiro.getNome(),
+                aventureiro.getCompanheiro()
+        );
     }
 
     // ==================================
