@@ -98,6 +98,24 @@ public class AventureiroService {
         return AventureiroMapper.toResponse(aventureiroRepository.save(aventureiro));
     }
 
+    // ================================
+    // Encerrar vinculo com Aventureiro
+    // ================================
+    @Transactional(readOnly = false)
+    public void encerrarVinculo(Long id) {
+        Aventureiro aventureiro = findById(id);
+        aventureiro.desativar();
+    }
+
+    // ==============================
+    // Recrutar Aventureiro novamente
+    // ==============================
+    @Transactional(readOnly = false)
+    public void recrutarNovamente(Long id) {
+        Aventureiro aventureiro = findById(id);
+        aventureiro.ativar();
+    }
+
     // ==================================
     // Definir Companheiro do Aventureiro
     // ==================================

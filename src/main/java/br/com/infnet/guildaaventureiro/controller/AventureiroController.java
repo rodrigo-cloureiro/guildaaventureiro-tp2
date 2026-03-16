@@ -70,6 +70,24 @@ public class AventureiroController {
                 .body(aventureiroService.criar(dto));
     }
 
+    // ================================
+    // Encerrar vinculo com Aventureiro
+    // ================================
+    @PatchMapping(value = "/{id}/encerrar-vinculo")
+    public ResponseEntity<Void> encerrarVinculo(@PathVariable Long id) {
+        aventureiroService.encerrarVinculo(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // ==============================
+    // Recrutar Aventureiro novamente
+    // ==============================
+    @PatchMapping(value = "/{id}/recrutar")
+    public ResponseEntity<Void> recrutar(@PathVariable Long id) {
+        aventureiroService.recrutarNovamente(id);
+        return ResponseEntity.noContent().build();
+    }
+
     // ==================================
     // Definir Companheiro do Aventureiro
     // ==================================
