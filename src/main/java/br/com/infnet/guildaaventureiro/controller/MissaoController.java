@@ -5,6 +5,7 @@ import br.com.infnet.guildaaventureiro.dto.PagedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoDetailedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoFiltroRequest;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoResponse;
+import br.com.infnet.guildaaventureiro.dto.missao.MissaoUpdate;
 import br.com.infnet.guildaaventureiro.service.MissaoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,5 +54,47 @@ public class MissaoController {
     public ResponseEntity<MissaoResponse> registrarMissao(@RequestBody @Valid MissaoCreate dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(missaoService.criar(dto));
+    }
+
+    // ================
+    // Atualizar Missão
+    // ================
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<MissaoResponse> atualizar(
+            @PathVariable Long id,
+            @RequestBody @Valid MissaoUpdate dto
+    ) {
+        return ResponseEntity.ok()
+                .body(missaoService.atualizar(id, dto));
+    }
+
+    // ==============
+    // Iniciar Missão
+    // ==============
+    @PatchMapping(value = "/{id}/iniciar")
+    public ResponseEntity<Void> iniciar(@PathVariable Long id) {
+        missaoService.iniciar(id);
+        return ResponseEntity.noContent()
+                .build();
+    }
+
+    // ===============
+    // Concluir Missão
+    // ===============
+    @PatchMapping(value = "/{id}/concluir")
+    public ResponseEntity<Void> concluir(@PathVariable Long id) {
+        missaoService.concluir(id);
+        return ResponseEntity.noContent()
+                .build();
+    }
+
+    // ===============
+    // Cancelar Missão
+    // ===============
+    @PatchMapping(value = "/{id}/cancelar")
+    public ResponseEntity<Void> cancelar(@PathVariable Long id) {
+        missaoService.cancelar(id);
+        return ResponseEntity.noContent()
+                .build();
     }
 }
