@@ -8,6 +8,7 @@ import br.com.infnet.guildaaventureiro.exception.aventura.AventureiroInativoExce
 import br.com.infnet.guildaaventureiro.exception.aventura.MissaoNaoAceitaParticipantesException;
 import br.com.infnet.guildaaventureiro.exception.aventura.OrganizacaoInvalidaException;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -26,6 +27,7 @@ import java.util.Set;
         }
 )
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Missao {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "missoes_id")
@@ -35,6 +37,7 @@ public class Missao {
             schema = "aventura",
             allocationSize = 1
     )
+    @EqualsAndHashCode.Include
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -86,6 +89,28 @@ public class Missao {
 
     public Set<ParticipacaoMissao> getParticipacoesEmMissoes() {
         return Collections.unmodifiableSet(this.participacoesEmMissoes);
+    }
+
+    public void validarAlteracao() {
+        if (this.status == StatusMissao.CANCELADA) {
+            throw new IllegalStateException("Não é possível alterar missões canceladas");
+        }
+    }
+
+    public void alterarTitulo(String titulo) {
+        if (titulo == null || titulo.isBlank() || titulo.length() > 150) {
+            throw new IllegalArgumentException("O título deve ser informado e possuir no máximo 150 caracteres");
+        }
+
+        this.titulo = titulo;
+    }
+
+    public void alterarNivelPerigo(NivelPerigoMissao nivelPerigo) {
+        if (nivelPerigo == null) {
+            throw new IllegalArgumentException("O nível de perigo deve ser informado");
+        }
+
+        this.nivelPerigo = nivelPerigo;
     }
 
     public void iniciarMissao() {
