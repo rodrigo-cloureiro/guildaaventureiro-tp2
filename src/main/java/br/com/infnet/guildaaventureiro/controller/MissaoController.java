@@ -1,5 +1,6 @@
 package br.com.infnet.guildaaventureiro.controller;
 
+import br.com.infnet.guildaaventureiro.dto.MissaoCreate;
 import br.com.infnet.guildaaventureiro.dto.PagedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoDetailedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoFiltroRequest;
@@ -9,11 +10,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,5 +44,14 @@ public class MissaoController {
     public ResponseEntity<MissaoDetailedResponse> detalharMissao(@PathVariable Long id) {
         return ResponseEntity.ok()
                 .body(missaoService.missaoDetalhada(id));
+    }
+
+    // ================
+    // Registrar Missão
+    // ================
+    @PostMapping(value = "")
+    public ResponseEntity<MissaoResponse> registrarMissao(@RequestBody @Valid MissaoCreate dto) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(missaoService.criar(dto));
     }
 }

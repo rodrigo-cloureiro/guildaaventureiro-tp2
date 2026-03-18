@@ -1,12 +1,15 @@
 package br.com.infnet.guildaaventureiro.service;
 
+import br.com.infnet.guildaaventureiro.domain.audit.Organizacao;
 import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
+import br.com.infnet.guildaaventureiro.dto.MissaoCreate;
 import br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMissaoResponse;
 import br.com.infnet.guildaaventureiro.dto.PagedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoDetailedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoFiltroRequest;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoResponse;
 import br.com.infnet.guildaaventureiro.mapper.MissaoMapper;
+import br.com.infnet.guildaaventureiro.repository.audit.OrganizacaoRepository;
 import br.com.infnet.guildaaventureiro.repository.aventura.MissaoRepository;
 import br.com.infnet.guildaaventureiro.repository.aventura.ParticipacaoMissaoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,6 +26,7 @@ import java.util.List;
 public class MissaoService {
     private final MissaoRepository missaoRepository;
     private final ParticipacaoMissaoRepository participacaoMissaoRepository;
+    private final OrganizacaoRepository organizacaoRepository;
 
     // ==============
     // Listar Missões
@@ -53,5 +57,17 @@ public class MissaoService {
         List<AventureiroMissaoResponse> participantes = participacaoMissaoRepository.findParticipantesByMissaoId(id);
 
         return new MissaoDetailedResponse(MissaoMapper.toResponse(missao), participantes);
+    }
+
+    // ================
+    // Registrar missão
+    // ================
+    public MissaoResponse criar(MissaoCreate dto) {
+        Organizacao organizacao = organizacaoRepository.findById(dto.organizacaoId())
+                .orElseThrow(() -> new EntityNotFoundException("Organização não encontrada"));
+
+        Missao missao = MissaoMapper.toMissao(dto, organizacao);
+
+        return MissaoMapper.toResponse(missaoRepository.save(missao));
     }
 }
