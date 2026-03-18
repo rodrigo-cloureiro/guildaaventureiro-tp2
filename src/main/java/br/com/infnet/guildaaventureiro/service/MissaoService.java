@@ -8,6 +8,7 @@ import br.com.infnet.guildaaventureiro.dto.PagedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoDetailedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoFiltroRequest;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoResponse;
+import br.com.infnet.guildaaventureiro.dto.missao.MissaoUpdate;
 import br.com.infnet.guildaaventureiro.mapper.MissaoMapper;
 import br.com.infnet.guildaaventureiro.repository.audit.OrganizacaoRepository;
 import br.com.infnet.guildaaventureiro.repository.aventura.MissaoRepository;
@@ -69,5 +70,55 @@ public class MissaoService {
         Missao missao = MissaoMapper.toMissao(dto, organizacao);
 
         return MissaoMapper.toResponse(missaoRepository.save(missao));
+    }
+
+    // ================
+    // Atualizar Missão
+    // ================
+    @Transactional(readOnly = false)
+    public MissaoResponse atualizar(Long id, MissaoUpdate dto) {
+        Missao missao = findById(id);
+        missao.validarAlteracao();
+
+        if (dto.titulo() != null) {
+            missao.alterarTitulo(dto.titulo());
+        }
+        if (dto.nivelPerigo() != null) {
+            missao.alterarNivelPerigo(dto.nivelPerigo());
+        }
+
+        return MissaoMapper.toResponse(missao);
+    }
+
+    // ==============
+    // Iniciar Missão
+    // ==============
+    @Transactional(readOnly = false)
+    public void iniciar(Long id) {
+        Missao missao = findById(id);
+        missao.iniciarMissao();
+    }
+
+    // ===============
+    // Concluir Missão
+    // ===============
+    @Transactional(readOnly = false)
+    public void concluir(Long id) {
+        Missao missao = findById(id);
+        missao.concluirMissao();
+    }
+
+    // ===============
+    // Cancelar Missão
+    // ===============
+    @Transactional(readOnly = false)
+    public void cancelar(Long id) {
+        Missao missao = findById(id);
+        missao.cancelarMissao();
+    }
+
+    private Missao findById(Long id) {
+        return missaoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Missão não encontrada"));
     }
 }
