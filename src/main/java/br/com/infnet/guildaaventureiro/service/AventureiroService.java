@@ -98,6 +98,25 @@ public class AventureiroService {
         return AventureiroMapper.toResponse(aventureiroRepository.save(aventureiro));
     }
 
+    // =====================
+    // Atualizar Aventureiro
+    // =====================
+    @Transactional(readOnly = false)
+    public AventureiroResponse atualizar(Long id, AventureiroUpdate dto) {
+        Aventureiro aventureiro = findById(id);
+
+        if (dto.nome() != null)
+            aventureiro.alterarNome(dto.nome());
+
+        if (dto.classe() != null)
+            aventureiro.alterarClasse(dto.classe());
+
+        if (dto.nivel() != null)
+            aventureiro.alterarNivel(dto.nivel());
+
+        return AventureiroMapper.toResponse(aventureiro);
+    }
+
     // ================================
     // Encerrar vinculo com Aventureiro
     // ================================

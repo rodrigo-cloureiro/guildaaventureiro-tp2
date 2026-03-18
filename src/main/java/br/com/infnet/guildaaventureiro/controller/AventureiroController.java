@@ -70,6 +70,17 @@ public class AventureiroController {
                 .body(aventureiroService.criar(dto));
     }
 
+    // =====================
+    // Atualizar Aventureiro
+    // =====================
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<AventureiroResponse> atualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody AventureiroUpdate update
+    ) {
+        return ResponseEntity.ok(aventureiroService.atualizar(id, update));
+    }
+
     // ================================
     // Encerrar vinculo com Aventureiro
     // ================================
