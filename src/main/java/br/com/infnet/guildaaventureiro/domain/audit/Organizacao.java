@@ -1,6 +1,7 @@
 package br.com.infnet.guildaaventureiro.domain.audit;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
+import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,6 +43,9 @@ public class Organizacao {
 
     @OneToMany(mappedBy = "organizacao", fetch = FetchType.LAZY)
     private final Set<Usuario> usuarios = new HashSet<>();
+
+    @OneToMany(mappedBy = "organizacao", fetch = FetchType.LAZY)
+    private final Set<Missao> missoes = new HashSet<>();
 
     @OneToMany(mappedBy = "organizacao", fetch = FetchType.LAZY)
     private final Set<Role> roles = new HashSet<>();
