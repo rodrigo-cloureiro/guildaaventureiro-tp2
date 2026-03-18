@@ -110,6 +110,29 @@ public class Aventureiro {
         this.nivel = nivel;
     }
 
+    public void alterarNome(String nome) {
+        if (nome == null || nome.isBlank() || nome.length() > 120) {
+            throw new IllegalArgumentException("O nome deve ser informado e possuir no máximo 120 caracteres");
+        }
+
+        this.nome = nome;
+    }
+
+    public void alterarClasse(AventureiroClasse classe) {
+        if (classe == null) {
+            throw new IllegalArgumentException("A classe deve ser informada");
+        }
+
+        this.classe = classe;
+    }
+
+    public void alterarNivel(int nivel) {
+        if (nivel < 1) {
+            throw new IllegalArgumentException("O nível deve ser maior ou igual a 1");
+        }
+        this.nivel = nivel;
+    }
+
     public void desativar() {
         this.ativo = false;
     }
