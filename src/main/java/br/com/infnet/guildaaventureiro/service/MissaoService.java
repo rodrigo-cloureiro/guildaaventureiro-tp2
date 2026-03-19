@@ -3,6 +3,8 @@ package br.com.infnet.guildaaventureiro.service;
 import br.com.infnet.guildaaventureiro.domain.audit.Organizacao;
 import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
+import br.com.infnet.guildaaventureiro.domain.aventura.ParticipacaoMissao;
+import br.com.infnet.guildaaventureiro.domain.aventura.enums.StatusMissao;
 import br.com.infnet.guildaaventureiro.dto.AdicionarParticipanteMissao;
 import br.com.infnet.guildaaventureiro.dto.MissaoCreate;
 import br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMissaoResponse;
@@ -118,6 +120,26 @@ public class MissaoService {
     public void cancelar(Long id) {
         Missao missao = findById(id);
         missao.cancelarMissao();
+    }
+
+    // ========================
+    // Recompensar Participante
+    // ========================
+    @Transactional(readOnly = false)
+    public void recompensarParticipante(Long missaoId, Long participanteId, int recompensa) {
+        Missao missao = findById(missaoId);
+
+        if (!missao.getStatus().equals(StatusMissao.EM_ANDAMENTO)) {
+            throw new IllegalArgumentException(
+                    "Não é possível recompensar participantes em missões que não foram iniciadas"
+            );
+        }
+
+        ParticipacaoMissao participacao = participacaoMissaoRepository
+                .findByMissaoIdAndAventureiroId(missaoId, participanteId)
+                .orElseThrow(() -> new IllegalArgumentException("Não foi encontrada participação na missão"));
+
+        participacao.recompensar(recompensa);
     }
 
     // ================================
