@@ -48,11 +48,7 @@ public class MissaoRepositoryTest {
                 "Finalizar o TP2",
                 NivelPerigoMissao.CRITICO
         );
-        missao.adicionarAventureiro(
-                aventureiro,
-                PapelMissao.EXPLORADOR,
-                1_000
-        );
+        missao.adicionarParticipante(aventureiro, PapelMissao.EXPLORADOR);
         missaoRepository.save(missao);
 
         assertFalse(missaoRepository.findAll().isEmpty());
