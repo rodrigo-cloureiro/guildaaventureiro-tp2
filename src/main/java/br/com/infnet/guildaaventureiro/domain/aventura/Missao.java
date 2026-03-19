@@ -139,21 +139,19 @@ public class Missao {
         this.status = StatusMissao.CANCELADA;
     }
 
-    public void adicionarAventureiro(
-            Aventureiro aventureiro,
-            PapelMissao papelMissao,
-            Integer recompensaEmOuro
-    ) { // TODO Implementar DTO
+    public void adicionarParticipante(Aventureiro aventureiro, PapelMissao papelMissao) {
         verificarOrganizacao(aventureiro);
         verificarStatus();
         verificarInatividadeAventureiro(aventureiro);
 
-        ParticipacaoMissao participacaoMissao = new ParticipacaoMissao(papelMissao, recompensaEmOuro);
-        participacaoMissao.associar(this, aventureiro);
-    }
+        ParticipacaoMissao participacao = new ParticipacaoMissao(this, aventureiro, papelMissao);
 
-    void adicionarParticipacao(ParticipacaoMissao participacaoMissao) {
-        this.participacoesEmMissoes.add(Objects.requireNonNull(participacaoMissao));
+        if (this.participacoesEmMissoes.contains(participacao)) {
+            throw new IllegalArgumentException("O aventureiro já participa dessa missão");
+        }
+
+        this.participacoesEmMissoes.add(participacao);
+        aventureiro.entrarEmMissao(participacao);
     }
 
     private void verificarStatus() {
