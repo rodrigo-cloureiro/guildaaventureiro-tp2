@@ -1,7 +1,9 @@
 package br.com.infnet.guildaaventureiro.service;
 
 import br.com.infnet.guildaaventureiro.domain.audit.Organizacao;
+import br.com.infnet.guildaaventureiro.domain.aventura.Aventureiro;
 import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
+import br.com.infnet.guildaaventureiro.dto.AdicionarParticipanteMissao;
 import br.com.infnet.guildaaventureiro.dto.MissaoCreate;
 import br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMissaoResponse;
 import br.com.infnet.guildaaventureiro.dto.PagedResponse;
@@ -28,6 +30,7 @@ public class MissaoService {
     private final MissaoRepository missaoRepository;
     private final ParticipacaoMissaoRepository participacaoMissaoRepository;
     private final OrganizacaoRepository organizacaoRepository;
+    private final AventureiroService aventureiroService;
 
     // ==============
     // Listar Missões
@@ -115,6 +118,17 @@ public class MissaoService {
     public void cancelar(Long id) {
         Missao missao = findById(id);
         missao.cancelarMissao();
+    }
+
+    // ================================
+    // Adicionar Participante na Missão
+    // ================================
+    @Transactional(readOnly = false)
+    public void adicionarParticipante(Long missaoId, AdicionarParticipanteMissao dto) {
+        Missao missao = findById(missaoId);
+        Aventureiro aventureiro = aventureiroService.buscarAventureiroPorId(dto.participanteId());
+
+        missao.adicionarParticipante(aventureiro, dto.papelMissao());
     }
 
     private Missao findById(Long id) {
