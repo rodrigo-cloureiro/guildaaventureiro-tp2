@@ -99,6 +99,20 @@ public class MissaoController {
                 .build();
     }
 
+    // ========================
+    // Recompensar Participante
+    // ========================
+    @PatchMapping(value = "/{missaoId}/participantes/{participanteId}/recompensar/{recompensa}")
+    public ResponseEntity<Void> recompensar(
+            @PathVariable Long missaoId,
+            @PathVariable Long participanteId,
+            @PathVariable int recompensa
+    ) {
+        missaoService.recompensarParticipante(missaoId, participanteId, recompensa);
+        return ResponseEntity.noContent()
+                .build();
+    }
+
     // ================================
     // Adicionar Participante na Missão
     // ================================
