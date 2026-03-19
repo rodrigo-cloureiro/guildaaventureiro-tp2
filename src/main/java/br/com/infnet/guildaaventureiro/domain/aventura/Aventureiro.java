@@ -159,7 +159,11 @@ public class Aventureiro {
         this.companheiro = null;
     }
 
-    void entrarEmMissao(ParticipacaoMissao participacaoMissao) {
-        this.participacoesEmMissoes.add(participacaoMissao);
+    void entrarEmMissao(ParticipacaoMissao participacao) {
+        if (this.participacoesEmMissoes.contains(participacao)) {
+            throw new IllegalArgumentException("O aventureiro já participa dessa missão");
+        }
+
+        this.participacoesEmMissoes.add(participacao);
     }
 }
