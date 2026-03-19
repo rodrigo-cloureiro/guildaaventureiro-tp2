@@ -71,4 +71,12 @@ public class ParticipacaoMissao {
     public void definirMvp() {
         this.mvp = true;
     }
+
+    public void recompensar(int recompensa) {
+        if (recompensa <= 0) {
+            throw new IllegalArgumentException("Recompensa deve ser um valor positivo");
+        }
+
+        this.recompensaEmOuro += recompensa;
+    }
 }
