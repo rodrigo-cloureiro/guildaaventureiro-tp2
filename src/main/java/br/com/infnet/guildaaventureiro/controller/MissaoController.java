@@ -1,5 +1,6 @@
 package br.com.infnet.guildaaventureiro.controller;
 
+import br.com.infnet.guildaaventureiro.dto.AdicionarParticipanteMissao;
 import br.com.infnet.guildaaventureiro.dto.MissaoCreate;
 import br.com.infnet.guildaaventureiro.dto.PagedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.MissaoDetailedResponse;
@@ -95,6 +96,19 @@ public class MissaoController {
     public ResponseEntity<Void> cancelar(@PathVariable Long id) {
         missaoService.cancelar(id);
         return ResponseEntity.noContent()
+                .build();
+    }
+
+    // ================================
+    // Adicionar Participante na Missão
+    // ================================
+    @PostMapping(value = "/{id}/participantes")
+    public ResponseEntity<Void> adicionarParticipante(
+            @PathVariable Long id,
+            @RequestBody @Valid AdicionarParticipanteMissao dto
+    ) {
+        missaoService.adicionarParticipante(id, dto);
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .build();
     }
 }
