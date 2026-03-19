@@ -3,10 +3,7 @@ package br.com.infnet.guildaaventureiro.controller;
 import br.com.infnet.guildaaventureiro.dto.AdicionarParticipanteMissao;
 import br.com.infnet.guildaaventureiro.dto.MissaoCreate;
 import br.com.infnet.guildaaventureiro.dto.PagedResponse;
-import br.com.infnet.guildaaventureiro.dto.missao.MissaoDetailedResponse;
-import br.com.infnet.guildaaventureiro.dto.missao.MissaoFiltroRequest;
-import br.com.infnet.guildaaventureiro.dto.missao.MissaoResponse;
-import br.com.infnet.guildaaventureiro.dto.missao.MissaoUpdate;
+import br.com.infnet.guildaaventureiro.dto.missao.*;
 import br.com.infnet.guildaaventureiro.service.MissaoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -102,13 +99,13 @@ public class MissaoController {
     // ========================
     // Recompensar Participante
     // ========================
-    @PatchMapping(value = "/{missaoId}/participantes/{participanteId}/recompensar/{recompensa}")
+    @PatchMapping(value = "/{missaoId}/participantes/{participanteId}/recompensar")
     public ResponseEntity<Void> recompensar(
             @PathVariable Long missaoId,
             @PathVariable Long participanteId,
-            @PathVariable int recompensa
+            @RequestBody @Valid RecompensarParticipante dto
     ) {
-        missaoService.recompensarParticipante(missaoId, participanteId, recompensa);
+        missaoService.recompensarParticipante(missaoId, participanteId, dto);
         return ResponseEntity.noContent()
                 .build();
     }

@@ -9,10 +9,7 @@ import br.com.infnet.guildaaventureiro.dto.AdicionarParticipanteMissao;
 import br.com.infnet.guildaaventureiro.dto.MissaoCreate;
 import br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMissaoResponse;
 import br.com.infnet.guildaaventureiro.dto.PagedResponse;
-import br.com.infnet.guildaaventureiro.dto.missao.MissaoDetailedResponse;
-import br.com.infnet.guildaaventureiro.dto.missao.MissaoFiltroRequest;
-import br.com.infnet.guildaaventureiro.dto.missao.MissaoResponse;
-import br.com.infnet.guildaaventureiro.dto.missao.MissaoUpdate;
+import br.com.infnet.guildaaventureiro.dto.missao.*;
 import br.com.infnet.guildaaventureiro.mapper.MissaoMapper;
 import br.com.infnet.guildaaventureiro.repository.audit.OrganizacaoRepository;
 import br.com.infnet.guildaaventureiro.repository.aventura.MissaoRepository;
@@ -126,7 +123,11 @@ public class MissaoService {
     // Recompensar Participante
     // ========================
     @Transactional(readOnly = false)
-    public void recompensarParticipante(Long missaoId, Long participanteId, int recompensa) {
+    public void recompensarParticipante(
+            Long missaoId,
+            Long participanteId,
+            RecompensarParticipante dto
+    ) {
         Missao missao = findById(missaoId);
 
         if (!missao.getStatus().equals(StatusMissao.EM_ANDAMENTO)) {
@@ -139,7 +140,7 @@ public class MissaoService {
                 .findByMissaoIdAndAventureiroId(missaoId, participanteId)
                 .orElseThrow(() -> new IllegalArgumentException("Não foi encontrada participação na missão"));
 
-        participacao.recompensar(recompensa);
+        participacao.recompensar(dto.recompensa());
     }
 
     // ================================
