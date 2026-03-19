@@ -22,7 +22,6 @@ import java.util.Objects;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ParticipacaoMissao {
     @EmbeddedId
-    @EqualsAndHashCode.Include
     private final ParticipacaoMissaoId id = new ParticipacaoMissaoId();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,6 +31,7 @@ public class ParticipacaoMissao {
             nullable = false,
             foreignKey = @ForeignKey(name = "fk_participacao_missao_missao")
     )
+    @EqualsAndHashCode.Include
     private Missao missao;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,6 +41,7 @@ public class ParticipacaoMissao {
             nullable = false,
             foreignKey = @ForeignKey(name = "fk_participacao_missao_aventureiro")
     )
+    @EqualsAndHashCode.Include
     private Aventureiro aventureiro;
 
     @Enumerated(EnumType.STRING)
@@ -49,7 +50,7 @@ public class ParticipacaoMissao {
 
     @Min(value = 0, message = "A recompensa em ouro deve ser maior ou igual a zero")
     @Column(name = "recompensa_em_ouro", nullable = true)
-    private Integer recompensaEmOuro;
+    private Integer recompensaEmOuro = 0;
 
     @Column(nullable = false)
     private boolean mvp = false;
@@ -61,19 +62,13 @@ public class ParticipacaoMissao {
     protected ParticipacaoMissao() {
     }
 
-    public ParticipacaoMissao(PapelMissao papelMissao, Integer recompensaEmOuro) {
+    public ParticipacaoMissao(Missao missao, Aventureiro aventureiro, PapelMissao papelMissao) {
+        this.missao = missao;
+        this.aventureiro = Objects.requireNonNull(aventureiro, "O aventureiro é obrigatório");
         this.papel = Objects.requireNonNull(papelMissao, "O papel do aventureiro na missão é obrigatório");
-        this.recompensaEmOuro = recompensaEmOuro;
     }
 
     public void definirMvp() {
         this.mvp = true;
-    }
-
-    public void associar(Missao missao, Aventureiro aventureiro) {
-        this.missao = Objects.requireNonNull(missao);
-        this.aventureiro = Objects.requireNonNull(aventureiro);
-        missao.adicionarParticipacao(this);
-        aventureiro.entrarEmMissao(this);
     }
 }
