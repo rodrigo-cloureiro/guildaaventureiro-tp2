@@ -172,6 +172,11 @@ public class AventureiroService {
         aventureiro.removerCompanheiro();
     }
 
+    @Transactional(readOnly = true)
+    protected Aventureiro buscarAventureiroPorId(Long id) {
+        return findById(id);
+    }
+
     private Aventureiro findById(Long id) {
         return aventureiroRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Aventureiro não encontrado"));
