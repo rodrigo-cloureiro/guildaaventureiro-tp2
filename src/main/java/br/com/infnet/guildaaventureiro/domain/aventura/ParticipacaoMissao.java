@@ -68,7 +68,7 @@ public class ParticipacaoMissao {
         this.papel = Objects.requireNonNull(papelMissao, "O papel do aventureiro na missão é obrigatório");
     }
 
-    public void definirMvp() {
+    void definirMvp() {
         this.mvp = true;
     }
 

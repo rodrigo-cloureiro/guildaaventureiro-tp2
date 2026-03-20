@@ -108,6 +108,11 @@ public class MissaoService {
     public void concluir(Long id) {
         Missao missao = findById(id);
         missao.concluirMissao();
+
+        List<ParticipacaoMissao> participacao = participacaoMissaoRepository
+                .findParticipacoesComMaiorRecompensa(missao.getId());
+
+        missao.definirMvp(participacao);
     }
 
     // ===============

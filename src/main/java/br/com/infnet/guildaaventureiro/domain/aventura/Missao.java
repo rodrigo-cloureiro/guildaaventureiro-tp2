@@ -13,10 +13,7 @@ import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(
@@ -152,6 +149,14 @@ public class Missao {
 
         this.participacoesEmMissoes.add(participacao);
         aventureiro.entrarEmMissao(participacao);
+    }
+
+    public void definirMvp(List<ParticipacaoMissao> participacoes) {
+        if (!this.getStatus().equals(StatusMissao.CONCLUIDA)) {
+            throw new IllegalStateException("Não é possível definir MVP para missões que não estão concluídas");
+        }
+
+        participacoes.forEach(ParticipacaoMissao::definirMvp);
     }
 
     private void verificarStatus() {
