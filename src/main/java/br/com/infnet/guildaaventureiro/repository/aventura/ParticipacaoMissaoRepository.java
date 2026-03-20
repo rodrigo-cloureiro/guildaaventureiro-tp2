@@ -1,6 +1,7 @@
 package br.com.infnet.guildaaventureiro.repository.aventura;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.ParticipacaoMissao;
+import br.com.infnet.guildaaventureiro.domain.aventura.ParticipacaoMissaoId;
 import br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMissaoResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,12 +12,24 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ParticipacaoMissaoRepository extends JpaRepository<ParticipacaoMissao, Long> {
+public interface ParticipacaoMissaoRepository extends JpaRepository<ParticipacaoMissao, ParticipacaoMissaoId> {
     long countByAventureiroId(Long id);
 
     Optional<ParticipacaoMissao> findTopByAventureiroIdOrderByDataRegistroDesc(Long id);
 
     Optional<ParticipacaoMissao> findByMissaoIdAndAventureiroId(Long missaoId, Long aventureiroId);
+
+    @Query(value = """
+            SELECT pm
+            FROM ParticipacaoMissao pm
+            WHERE pm.missao.id = :missaoId AND
+            pm.recompensaEmOuro = (
+                        SELECT MAX(pm2.recompensaEmOuro)
+                        FROM ParticipacaoMissao pm2
+                        WHERE pm2.missao.id = :missaoId
+                        )
+            """)
+    List<ParticipacaoMissao> findParticipacoesComMaiorRecompensa(@Param(value = "missaoId") Long missaoId);
 
     @Query(value = """
             SELECT new br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMissaoResponse(
