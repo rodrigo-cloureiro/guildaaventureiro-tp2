@@ -2,6 +2,8 @@ package br.com.infnet.guildaaventureiro.controller;
 
 import br.com.infnet.guildaaventureiro.dto.relatorio.RankingParticipacao;
 import br.com.infnet.guildaaventureiro.dto.relatorio.RankingPartipacaoFiltroRequest;
+import br.com.infnet.guildaaventureiro.dto.relatorio.RelatorioMissao;
+import br.com.infnet.guildaaventureiro.dto.relatorio.RelatorioMissaoFiltroRequest;
 import br.com.infnet.guildaaventureiro.service.RelatorioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +24,19 @@ public class RelatorioController {
     // Ranking de Participação
     // =======================
     @GetMapping(value = "/ranking-participacao")
-    public ResponseEntity<List<RankingParticipacao>> rankingParticipacao(@Valid RankingPartipacaoFiltroRequest filtro) {
+    public ResponseEntity<List<RankingParticipacao>> rankingParticipacao(
+            @Valid RankingPartipacaoFiltroRequest filtro
+    ) {
         return ResponseEntity.ok()
                 .body(relatorioService.rankingParticipacao(filtro));
+    }
+
+    // ====================
+    // Relatório de Missões
+    // ====================
+    @GetMapping(value = "/missoes")
+    public ResponseEntity<List<RelatorioMissao>> relatorioMissoes(@Valid RelatorioMissaoFiltroRequest filtro) {
+        return ResponseEntity.ok()
+                .body(relatorioService.relatorioMissoes(filtro));
     }
 }
