@@ -2,6 +2,8 @@ package br.com.infnet.guildaaventureiro.service;
 
 import br.com.infnet.guildaaventureiro.dto.relatorio.RankingParticipacao;
 import br.com.infnet.guildaaventureiro.dto.relatorio.RankingPartipacaoFiltroRequest;
+import br.com.infnet.guildaaventureiro.dto.relatorio.RelatorioMissao;
+import br.com.infnet.guildaaventureiro.dto.relatorio.RelatorioMissaoFiltroRequest;
 import br.com.infnet.guildaaventureiro.repository.aventura.ParticipacaoMissaoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,5 +36,12 @@ public class RelatorioService {
                 inicio,
                 termino
         );
+    }
+
+    // ====================
+    // Relatório de Missões
+    // ====================
+    public List<RelatorioMissao> relatorioMissoes(RelatorioMissaoFiltroRequest filtro) {
+        return participacaoMissaoRepository.relatorioMissoes(filtro.inicio(), filtro.termino());
     }
 }
