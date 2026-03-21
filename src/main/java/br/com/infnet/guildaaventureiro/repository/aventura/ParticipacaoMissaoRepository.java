@@ -5,6 +5,7 @@ import br.com.infnet.guildaaventureiro.domain.aventura.ParticipacaoMissaoId;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.StatusMissao;
 import br.com.infnet.guildaaventureiro.dto.relatorio.RankingParticipacao;
 import br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMissaoResponse;
+import br.com.infnet.guildaaventureiro.dto.relatorio.RelatorioMissao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -68,6 +69,26 @@ public interface ParticipacaoMissaoRepository extends JpaRepository<Participacao
             """)
     List<RankingParticipacao> rankingParticipacao(
             @Param(value = "status") StatusMissao status,
+            @Param(value = "inicio") LocalDateTime inicio,
+            @Param(value = "termino") LocalDateTime termino
+    );
+
+    @Query(value = """
+            SELECT new br.com.infnet.guildaaventureiro.dto.relatorio.RelatorioMissao(
+                        m.titulo,
+                        m.status,
+                        m.nivelPerigo,
+                        COUNT(pm.missao.id),
+                        SUM(pm.recompensaEmOuro)
+            )
+            FROM ParticipacaoMissao pm
+            LEFT JOIN pm.missao m
+            WHERE pm.missao.dataInicio >= :inicio
+            AND (pm.missao.dataTermino <= :termino OR pm.missao.dataTermino IS NULL)
+            GROUP BY m.id
+            ORDER BY m.dataCriacao
+            """)
+    List<RelatorioMissao> relatorioMissoes(
             @Param(value = "inicio") LocalDateTime inicio,
             @Param(value = "termino") LocalDateTime termino
     );
