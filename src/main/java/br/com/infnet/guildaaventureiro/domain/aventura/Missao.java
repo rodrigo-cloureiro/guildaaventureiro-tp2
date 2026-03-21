@@ -134,6 +134,7 @@ public class Missao {
         }
 
         this.status = StatusMissao.CANCELADA;
+        this.dataTermino = LocalDateTime.now();
     }
 
     public void adicionarParticipante(Aventureiro aventureiro, PapelMissao papelMissao) {
