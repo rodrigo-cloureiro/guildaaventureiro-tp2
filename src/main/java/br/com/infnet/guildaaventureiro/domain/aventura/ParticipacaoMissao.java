@@ -1,6 +1,7 @@
 package br.com.infnet.guildaaventureiro.domain.aventura;
 
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.PapelMissao;
+import br.com.infnet.guildaaventureiro.exception.aventura.BusinessException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.EqualsAndHashCode;
@@ -74,7 +75,7 @@ public class ParticipacaoMissao {
 
     public void recompensar(int recompensa) {
         if (recompensa <= 0) {
-            throw new IllegalArgumentException("Recompensa deve ser um valor positivo");
+            throw new BusinessException("Recompensa deve ser um valor positivo");
         }
 
         this.recompensaEmOuro += recompensa;

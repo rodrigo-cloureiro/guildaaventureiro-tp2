@@ -10,6 +10,7 @@ import br.com.infnet.guildaaventureiro.dto.missao.MissaoCreate;
 import br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMissaoResponse;
 import br.com.infnet.guildaaventureiro.dto.PagedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.*;
+import br.com.infnet.guildaaventureiro.exception.aventura.BusinessException;
 import br.com.infnet.guildaaventureiro.mapper.MissaoMapper;
 import br.com.infnet.guildaaventureiro.repository.audit.OrganizacaoRepository;
 import br.com.infnet.guildaaventureiro.repository.aventura.MissaoRepository;
@@ -139,14 +140,14 @@ public class MissaoService {
         Missao missao = findById(missaoId);
 
         if (!missao.getStatus().equals(StatusMissao.EM_ANDAMENTO)) {
-            throw new IllegalArgumentException(
+            throw new BusinessException(
                     "Não é possível recompensar participantes em missões que não foram iniciadas"
             );
         }
 
         ParticipacaoMissao participacao = participacaoMissaoRepository
                 .findByMissaoIdAndAventureiroId(missaoId, participanteId)
-                .orElseThrow(() -> new IllegalArgumentException("Não foi encontrada participação na missão"));
+                .orElseThrow(() -> new EntityNotFoundException("Não foi encontrada participação na missão"));
 
         participacao.recompensar(dto.recompensa());
     }

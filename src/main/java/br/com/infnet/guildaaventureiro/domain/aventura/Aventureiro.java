@@ -3,8 +3,8 @@ package br.com.infnet.guildaaventureiro.domain.aventura;
 import br.com.infnet.guildaaventureiro.domain.audit.Organizacao;
 import br.com.infnet.guildaaventureiro.domain.audit.Usuario;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.AventureiroClasse;
+import br.com.infnet.guildaaventureiro.exception.aventura.BusinessException;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -112,7 +112,7 @@ public class Aventureiro {
 
     public void alterarNome(String nome) {
         if (nome == null || nome.isBlank() || nome.length() > 120) {
-            throw new IllegalArgumentException("O nome deve ser informado e possuir no máximo 120 caracteres");
+            throw new BusinessException("O nome deve ser informado e possuir no máximo 120 caracteres");
         }
 
         this.nome = nome;
@@ -120,7 +120,7 @@ public class Aventureiro {
 
     public void alterarClasse(AventureiroClasse classe) {
         if (classe == null) {
-            throw new IllegalArgumentException("A classe deve ser informada");
+            throw new BusinessException("A classe deve ser informada");
         }
 
         this.classe = classe;
@@ -128,7 +128,7 @@ public class Aventureiro {
 
     public void alterarNivel(int nivel) {
         if (nivel < 1) {
-            throw new IllegalArgumentException("O nível deve ser maior ou igual a 1");
+            throw new BusinessException("O nível deve ser maior ou igual a 1");
         }
         this.nivel = nivel;
     }
@@ -161,7 +161,7 @@ public class Aventureiro {
 
     void entrarEmMissao(ParticipacaoMissao participacao) {
         if (this.participacoesEmMissoes.contains(participacao)) {
-            throw new IllegalArgumentException("O aventureiro já participa dessa missão");
+            throw new BusinessException("O aventureiro já participa dessa missão");
         }
 
         this.participacoesEmMissoes.add(participacao);

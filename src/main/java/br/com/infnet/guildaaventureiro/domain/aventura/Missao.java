@@ -5,6 +5,7 @@ import br.com.infnet.guildaaventureiro.domain.aventura.enums.NivelPerigoMissao;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.PapelMissao;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.StatusMissao;
 import br.com.infnet.guildaaventureiro.exception.aventura.AventureiroInativoException;
+import br.com.infnet.guildaaventureiro.exception.aventura.BusinessException;
 import br.com.infnet.guildaaventureiro.exception.aventura.MissaoNaoAceitaParticipantesException;
 import br.com.infnet.guildaaventureiro.exception.aventura.OrganizacaoInvalidaException;
 import jakarta.persistence.*;
@@ -90,13 +91,13 @@ public class Missao {
 
     public void validarAlteracao() {
         if (this.status == StatusMissao.CANCELADA) {
-            throw new IllegalStateException("Não é possível alterar missões canceladas");
+            throw new BusinessException("Não é possível alterar missões canceladas");
         }
     }
 
     public void alterarTitulo(String titulo) {
-        if (titulo == null || titulo.isBlank() || titulo.length() > 150) {
-            throw new IllegalArgumentException("O título deve ser informado e possuir no máximo 150 caracteres");
+        if (titulo.length() > 150) {
+            throw new BusinessException("O título deve possuir no máximo 150 caracteres");
         }
 
         this.titulo = titulo;
@@ -104,7 +105,7 @@ public class Missao {
 
     public void alterarNivelPerigo(NivelPerigoMissao nivelPerigo) {
         if (nivelPerigo == null) {
-            throw new IllegalArgumentException("O nível de perigo deve ser informado");
+            throw new BusinessException("O nível de perigo deve ser informado");
         }
 
         this.nivelPerigo = nivelPerigo;
@@ -112,7 +113,7 @@ public class Missao {
 
     public void iniciarMissao() {
         if (this.status != StatusMissao.PLANEJADA) {
-            throw new IllegalArgumentException("Não é possível iniciar missões que não estejam planejadas");
+            throw new BusinessException("Não é possível iniciar missões que não estejam planejadas");
         }
 
         this.status = StatusMissao.EM_ANDAMENTO;
@@ -121,7 +122,7 @@ public class Missao {
 
     public void concluirMissao() {
         if (this.status != StatusMissao.EM_ANDAMENTO) {
-            throw new IllegalArgumentException("A missão precisa estar em andamento para ser concluída");
+            throw new BusinessException("A missão precisa estar em andamento para ser concluída");
         }
 
         this.status = StatusMissao.CONCLUIDA;
@@ -130,7 +131,7 @@ public class Missao {
 
     public void cancelarMissao() {
         if (this.status == StatusMissao.CONCLUIDA) {
-            throw new IllegalArgumentException("Não é possível cancelar missões concluídas");
+            throw new BusinessException("Não é possível cancelar missões concluídas");
         }
 
         this.status = StatusMissao.CANCELADA;
@@ -145,7 +146,7 @@ public class Missao {
         ParticipacaoMissao participacao = new ParticipacaoMissao(this, aventureiro, papelMissao);
 
         if (this.participacoesEmMissoes.contains(participacao)) {
-            throw new IllegalArgumentException("O aventureiro já participa dessa missão");
+            throw new BusinessException("O aventureiro já participa dessa missão");
         }
 
         this.participacoesEmMissoes.add(participacao);
@@ -154,7 +155,7 @@ public class Missao {
 
     public void definirMvp(List<ParticipacaoMissao> participacoes) {
         if (!this.getStatus().equals(StatusMissao.CONCLUIDA)) {
-            throw new IllegalStateException("Não é possível definir MVP para missões que não estão concluídas");
+            throw new BusinessException("Não é possível definir MVP para missões que não estão concluídas");
         }
 
         participacoes.forEach(ParticipacaoMissao::definirMvp);

@@ -4,6 +4,7 @@ import br.com.infnet.guildaaventureiro.dto.relatorio.RankingParticipacao;
 import br.com.infnet.guildaaventureiro.dto.relatorio.RankingPartipacaoFiltroRequest;
 import br.com.infnet.guildaaventureiro.dto.relatorio.RelatorioMissao;
 import br.com.infnet.guildaaventureiro.dto.relatorio.RelatorioMissaoFiltroRequest;
+import br.com.infnet.guildaaventureiro.exception.aventura.BusinessException;
 import br.com.infnet.guildaaventureiro.repository.aventura.ParticipacaoMissaoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class RelatorioService {
         LocalDateTime termino = filtro.termino() == null ? now : filtro.termino();
 
         if (termino.isBefore(inicio)) {
-            throw new IllegalStateException("A data de término não pode ser anterior a data de início");
+            throw new BusinessException("A data de término não pode ser anterior a data de início");
         }
 
         return participacaoMissaoRepository.rankingParticipacao(
