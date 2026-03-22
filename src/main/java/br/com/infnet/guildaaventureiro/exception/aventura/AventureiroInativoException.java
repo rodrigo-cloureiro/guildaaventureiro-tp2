@@ -1,6 +1,6 @@
 package br.com.infnet.guildaaventureiro.exception.aventura;
 
-public class AventureiroInativoException extends RuntimeException {
+public class AventureiroInativoException extends BusinessException {
     public AventureiroInativoException(String message) {
         super(message);
     }
