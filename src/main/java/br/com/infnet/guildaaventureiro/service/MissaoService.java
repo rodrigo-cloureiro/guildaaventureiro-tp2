@@ -6,7 +6,7 @@ import br.com.infnet.guildaaventureiro.domain.aventura.Missao;
 import br.com.infnet.guildaaventureiro.domain.aventura.ParticipacaoMissao;
 import br.com.infnet.guildaaventureiro.domain.aventura.enums.StatusMissao;
 import br.com.infnet.guildaaventureiro.dto.AdicionarParticipanteMissao;
-import br.com.infnet.guildaaventureiro.dto.MissaoCreate;
+import br.com.infnet.guildaaventureiro.dto.missao.MissaoCreate;
 import br.com.infnet.guildaaventureiro.dto.aventureiro.AventureiroMissaoResponse;
 import br.com.infnet.guildaaventureiro.dto.PagedResponse;
 import br.com.infnet.guildaaventureiro.dto.missao.*;
