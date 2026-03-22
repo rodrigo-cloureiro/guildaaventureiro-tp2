@@ -35,9 +35,12 @@ public class MissaoService {
     // Listar Missões
     // ==============
     public PagedResponse<MissaoResponse> listar(MissaoFiltroRequest filtro, Pageable pageable) {
-        Page<MissaoResponse> responsePage = missaoRepository.findByFilters(
+        Page<MissaoResponse> responsePage = missaoRepository.findMissoesByFilters(
                 filtro.status(),
                 filtro.nivelPerigo(),
+                filtro.tipoData() != null ? filtro.tipoData().name() : null,
+                filtro.de(),
+                filtro.ate(),
                 pageable
         );
         return new PagedResponse<>(
