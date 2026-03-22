@@ -11,7 +11,6 @@ import br.com.infnet.guildaaventureiro.dto.aventureiro.*;
 import br.com.infnet.guildaaventureiro.dto.companheiro.CompanheiroCreate;
 import br.com.infnet.guildaaventureiro.exception.aventura.CompanheiroException;
 import br.com.infnet.guildaaventureiro.mapper.AventureiroMapper;
-import br.com.infnet.guildaaventureiro.repository.audit.UsuarioRepository;
 import br.com.infnet.guildaaventureiro.repository.aventura.AventureiroRepository;
 import br.com.infnet.guildaaventureiro.repository.aventura.ParticipacaoMissaoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AventureiroService {
     private final AventureiroRepository aventureiroRepository;
-    private final UsuarioRepository usuarioRepository;
     private final ParticipacaoMissaoRepository participacaoMissaoRepository;
+    private final UsuarioService usuarioService;
 
     // ===================
     // Listar Aventureiros
@@ -87,8 +86,7 @@ public class AventureiroService {
     // =====================
     @Transactional(readOnly = false)
     public AventureiroResponse criar(AventureiroCreate dto) {
-        Usuario usuario = usuarioRepository.findById(dto.usuarioId())
-                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+        Usuario usuario = usuarioService.findById(dto.usuarioId());
         Organizacao organizacao = usuario.getOrganizacao();
 
         Aventureiro aventureiro = AventureiroMapper.toEntity(dto);

@@ -29,8 +29,8 @@ import java.util.List;
 public class MissaoService {
     private final MissaoRepository missaoRepository;
     private final ParticipacaoMissaoRepository participacaoMissaoRepository;
-    private final OrganizacaoRepository organizacaoRepository;
     private final AventureiroService aventureiroService;
+    private final OrganizacaoService organizacaoService;
 
     // ==============
     // Listar Missões
@@ -70,11 +70,8 @@ public class MissaoService {
     // Registrar missão
     // ================
     public MissaoResponse criar(MissaoCreate dto) {
-        Organizacao organizacao = organizacaoRepository.findById(dto.organizacaoId())
-                .orElseThrow(() -> new EntityNotFoundException("Organização não encontrada"));
-
+        Organizacao organizacao = organizacaoService.findById(dto.organizacaoId());
         Missao missao = MissaoMapper.toMissao(dto, organizacao);
-
         return MissaoMapper.toResponse(missaoRepository.save(missao));
     }
 
